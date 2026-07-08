@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>巡 — 王道學九性氣學暦</title>
+<meta name="description" content="王道學・九性氣學にもとづく暦とバイオリズム。幸せノートで気力を高め、日々の指針を観る。">
+<meta name="theme-color" content="#F1EADA">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="巡">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;700;800&family=Yuji+Syuku&display=swap" rel="stylesheet">
+<style>
+:root{
+  --washi:#F1EADA; --washi2:#EAE1CC; --washi3:#F7F2E7;
+  --sumi:#26221B; --sumi2:#4A4438; --sumi3:#7A715F;
+  --shu:#A93B32; --shu2:#C05A50; --kincha:#9A7B3A; --kincha2:#B79A5E;
+  --sei:#2E5E4E; --line:rgba(38,34,27,.16); --line2:rgba(38,34,27,.08);
+  --shadow:0 1px 2px rgba(38,34,27,.07),0 6px 22px rgba(38,34,27,.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
+body{
+  font-family:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
+  background:var(--washi); color:var(--sumi); line-height:1.75;
+  background-image:radial-gradient(ellipse 90% 60% at 50% -10%, rgba(154,123,58,.06), transparent 60%),
+    repeating-linear-gradient(0deg, transparent 0 2px, rgba(38,34,27,.012) 2px 3px);
+  min-height:100vh; padding-bottom:calc(76px + env(safe-area-inset-bottom));
+}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px}
+/* ── ヘッダ ── */
+header{padding:22px 0 10px;text-align:center;position:relative}
+.brand{font-size:1.9rem;font-weight:800;letter-spacing:.5em;padding-left:.5em;color:var(--sumi)}
+.brand small{display:block;font-size:.68rem;font-weight:500;letter-spacing:.34em;color:var(--kincha);margin-top:2px}
+.enso{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:74px;height:74px;opacity:.3;pointer-events:none}
+/* ── タブ ── */
+nav{position:fixed;left:0;right:0;bottom:0;background:rgba(247,242,231,.96);backdrop-filter:blur(8px);
+  border-top:1px solid var(--line);z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+.tabs{max-width:520px;margin:0 auto;display:flex}
+.tab{flex:1;padding:10px 0 12px;text-align:center;color:var(--sumi3);cursor:pointer;border:none;background:none;
+  font-family:inherit;font-size:.78rem;letter-spacing:.1em;transition:color .18s}
+.tab .tico{display:block;font-size:1.22rem;line-height:1.35;font-weight:700}
+.tab.on{color:var(--shu)}
+.tab.on .tico{text-shadow:0 0 14px rgba(169,59,50,.25)}
+/* ── カード ── */
+.card{background:var(--washi3);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+  padding:18px 18px 16px;margin:0 0 14px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:14px;
+  background:radial-gradient(ellipse 120% 40% at 50% 0%, rgba(154,123,58,.05), transparent 55%)}
+.chd{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
+.ct{font-size:.8rem;letter-spacing:.28em;color:var(--kincha);font-weight:700}
+.csub{font-size:.7rem;color:var(--sumi3);letter-spacing:.06em}
+h2.big{font-size:1.5rem;font-weight:800;letter-spacing:.06em}
+.muted{color:var(--sumi3);font-size:.8rem}
+.hr{border:none;border-top:1px dashed var(--line);margin:12px 0}
+/* ── 日付ナビ ── */
+.datenav{display:flex;align-items:center;justify-content:center;gap:8px;margin:4px 0 14px}
+.dbtn{border:1px solid var(--line);background:var(--washi3);border-radius:9px;padding:6px 13px;cursor:pointer;
+  font-family:inherit;font-size:.85rem;color:var(--sumi2);transition:all .15s}
+.dbtn:active{transform:scale(.96)}
+.dbtn.today{color:var(--shu);border-color:rgba(169,59,50,.4)}
+.dmain{font-size:1.02rem;font-weight:700;letter-spacing:.04em;min-width:150px;text-align:center}
+/* ── 回座カード ── */
+.kaiza{display:flex;gap:16px;align-items:center}
+.kaiza .gz{flex:0 0 108px}
+.phase-name{font-size:1.32rem;font-weight:800;letter-spacing:.08em}
+.phase-name .kind-sei{color:var(--shu)} .phase-name .kind-sui{color:var(--sei)} .phase-name .kind-gou{color:var(--kincha)}
+.meidai{font-size:.85rem;color:var(--sumi2);margin-top:2px}
+.badge{display:inline-block;font-size:.66rem;letter-spacing:.16em;padding:2px 9px;border-radius:99px;border:1px solid var(--line);color:var(--sumi3);margin-right:5px;background:rgba(255,255,255,.35)}
+.badge.shu{color:var(--shu);border-color:rgba(169,59,50,.4)}
+.badge.kin{color:var(--kincha);border-color:rgba(154,123,58,.5)}
+.badge.sei{color:var(--sei);border-color:rgba(46,94,78,.4)}
+.guide{font-size:.9rem;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.guide p{margin:0 0 7px}
+.guide p:last-child{margin:0}
+.notify{margin-top:10px;font-size:.78rem;color:var(--sumi3);background:var(--washi2);border-radius:9px;padding:8px 11px;border:1px solid var(--line2)}
+.notify b{color:var(--sumi2)}
+/* ── 宿・支カード ── */
+.rowline{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dashed var(--line2);font-size:.9rem;gap:10px}
+.rowline:last-child{border-bottom:none}
+.rowline .k{color:var(--sumi3);font-size:.76rem;letter-spacing:.14em;flex:0 0 auto}
+.rowline .v{text-align:right}
+.en-kichi{color:var(--sei);font-weight:700} .en-chu{color:var(--kincha);font-weight:700} .en-kai{color:var(--shu);font-weight:700}
+.alert{margin-top:9px;font-size:.82rem;background:rgba(169,59,50,.06);border:1px solid rgba(169,59,50,.22);border-radius:9px;padding:8px 11px;color:#7c2f28}
+.alert.gou{background:rgba(46,94,78,.06);border-color:rgba(46,94,78,.25);color:#274f42}
+/* ── 方位盤 ── */
+.ban{width:100%;max-width:280px;margin:6px auto 2px;display:block}
+/* ── 暦グリッド ── */
+.mnav{display:flex;align-items:center;justify-content:space-between;margin:2px 0 10px}
+.mtitle{font-weight:800;font-size:1.05rem;letter-spacing:.08em}
+.cal{width:100%;border-collapse:collapse;table-layout:fixed}
+.cal th{font-size:.68rem;color:var(--sumi3);font-weight:500;padding:4px 0;letter-spacing:.1em}
+.cal td{height:52px;vertical-align:top;text-align:center;border-top:1px solid var(--line2);cursor:pointer;border-radius:7px;transition:background .12s;padding-top:4px}
+.cal td:hover{background:rgba(154,123,58,.07)}
+.cal td.off{opacity:.28;cursor:default}
+.cal td.selv{background:rgba(169,59,50,.09);outline:1.5px solid rgba(169,59,50,.4);outline-offset:-1.5px}
+.cal .dn{font-size:.86rem;font-weight:600}
+.cal .today .dn{color:var(--shu);font-weight:800}
+.cal .en{display:block;font-size:.6rem;line-height:1.3}
+.cal .pbar{display:block;height:3px;border-radius:2px;margin:2px 5px 0}
+.pb-sei{background:var(--shu2)} .pb-sui{background:var(--sei)} .pb-gou{background:var(--kincha2)}
+.legend{display:flex;gap:12px;justify-content:center;font-size:.66rem;color:var(--sumi3);margin-top:8px;flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:4px}
+.daydetail{margin-top:12px}
+/* ── 律カーブ ── */
+.curve{width:100%;display:block}
+.stripwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+.strip{display:flex;gap:5px;min-width:max-content;padding:4px 0}
+.scell{flex:0 0 auto;width:46px;text-align:center;border:1px solid var(--line2);border-radius:9px;padding:6px 0 7px;background:rgba(255,255,255,.3)}
+.scell.now{border-color:rgba(169,59,50,.5);background:rgba(169,59,50,.06)}
+.scell .sl{font-size:.62rem;color:var(--sumi3)}
+.scell .sv{font-size:.74rem;font-weight:700;line-height:1.4}
+.sv.k-sei{color:var(--shu)} .sv.k-sui{color:var(--sei)} .sv.k-gou{color:var(--kincha)}
+.scell .sh{height:26px;display:flex;align-items:flex-end;justify-content:center;margin-top:3px}
+.scell .shb{width:9px;border-radius:3px 3px 0 0;background:linear-gradient(180deg,var(--kincha2),var(--kincha))}
+/* ── 命タブ ── */
+.pilrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 4px}
+.pill{border:1px solid var(--line);border-radius:11px;text-align:center;padding:9px 2px;background:rgba(255,255,255,.35)}
+.pill .pk{font-size:.62rem;color:var(--sumi3);letter-spacing:.2em}
+.pill .pv{font-size:1.02rem;font-weight:800;margin-top:1px}
+.pill .pn{font-size:.6rem;color:var(--kincha)}
+.forminline{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}
+input[type=date],input[type=number],select{font-family:inherit;font-size:.92rem;color:var(--sumi);background:var(--washi3);
+  border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+.btn{font-family:inherit;font-size:.88rem;letter-spacing:.1em;color:#fff;background:var(--shu);border:none;border-radius:9px;
+  padding:9px 20px;cursor:pointer;box-shadow:0 2px 8px rgba(169,59,50,.25);transition:all .15s}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:none;color:var(--sumi2);border:1px solid var(--line);box-shadow:none}
+/* ── 幸せノート ── */
+.kgauge{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.klabel{font-size:1.35rem;font-weight:800}
+.k-genki{color:var(--shu)} .k-seiki{color:#B4522F} .k-kakki{color:var(--kincha)} .k-taiki{color:var(--sumi3)} .k-mekki{color:#5B6770}
+.kbarwrap{flex:1;height:10px;border-radius:6px;background:var(--washi2);border:1px solid var(--line2);overflow:hidden}
+.kbar{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--kincha2),var(--shu2));transition:width .3s}
+.kmarks{display:flex;justify-content:space-between;font-size:.6rem;color:var(--sumi3);margin-top:2px}
+.tklist{list-style:none;margin-top:10px}
+.tklist li{display:flex;align-items:flex-start;gap:10px;padding:8px 4px;border-bottom:1px dashed var(--line2);cursor:pointer;font-size:.9rem;transition:background .12s;border-radius:6px}
+.tklist li:hover{background:rgba(154,123,58,.05)}
+.tkbox{flex:0 0 20px;width:20px;height:20px;border:1.6px solid var(--kincha);border-radius:50%;margin-top:3px;position:relative;transition:all .15s}
+li.done .tkbox{background:var(--shu);border-color:var(--shu)}
+li.done .tkbox::after{content:"";position:absolute;left:6px;top:2.5px;width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)}
+li.done{color:var(--sumi3)}
+.streak{font-size:.78rem;color:var(--sumi3);margin-top:10px;text-align:center}
+.streak b{color:var(--shu);font-size:1rem}
+/* ── その他 ── */
+.note-warn{font-size:.7rem;color:var(--sumi3);margin-top:10px;padding-top:8px;border-top:1px dashed var(--line2)}
+.seibox{background:var(--washi2);border-radius:10px;padding:11px 13px;margin-top:9px;font-size:.86rem;border:1px solid var(--line2)}
+.seibox b{display:block;font-size:.95rem;margin-bottom:2px}
+.view{display:none;animation:fadein .25s ease}
+.view.on{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.footer-note{text-align:center;font-size:.64rem;color:var(--sumi3);letter-spacing:.1em;margin:18px 0 8px;opacity:.8}
+/* ── 縁タブ ── */
+input[type=text]{font-family:inherit;font-size:.92rem;color:var(--sumi);background:var(--washi3);border:1px solid var(--line);border-radius:9px;padding:8px 10px}
+.pmeta{font-size:.72rem;color:var(--sumi3)}
+.pdel{margin-left:auto;color:var(--sumi3);border:none;background:none;font-size:1.05rem;cursor:pointer;padding:2px 8px;font-family:inherit}
+.pdel:active{color:var(--shu)}
+.pairhead{display:flex;justify-content:center;align-items:center;gap:8px;font-weight:800;font-size:1.02rem;margin:2px 0 8px;flex-wrap:wrap}
+.pairhead .vs{color:var(--kincha);font-size:.85rem}
+.relmark{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-weight:800;font-size:.92rem;color:#fff;vertical-align:middle}
+.r-sei{background:var(--sei)} .r-koku{background:var(--shu)} .r-wa{background:var(--kincha)}
+.mtx{border-collapse:collapse;margin:6px auto}
+.mtx th{font-size:.66rem;color:var(--sumi3);font-weight:500;padding:3px 5px;white-space:nowrap;max-width:52px;overflow:hidden}
+.mtx td{width:34px;height:34px;text-align:center;border:1px solid var(--line2);cursor:pointer;font-size:.82rem;font-weight:700;transition:background .12s}
+.mtx td:hover{background:rgba(154,123,58,.08)}
+.mtx td.diag{background:var(--washi2);cursor:default;color:var(--sumi3)}
+.mtx td.c-sei{color:var(--sei)} .mtx td.c-koku{color:var(--shu)} .mtx td.c-wa{color:var(--kincha)}
+.mtx td.hit{outline:1.7px solid var(--shu);outline-offset:-1.7px;background:rgba(169,59,50,.07)}
+.elembar{display:flex;gap:6px;margin:8px 0 6px}
+.ecell{flex:1;text-align:center}
+.ecell .eb{height:46px;display:flex;align-items:flex-end;justify-content:center}
+.ecell .ebi{width:16px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--kincha2),var(--kincha))}
+.ecell.miss .ebi{background:none;border:1px dashed var(--line);width:14px}
+.ecell .el{font-size:.8rem;font-weight:700;margin-top:2px}
+.ecell .ec{font-size:.64rem;color:var(--sumi3)}
+.chipline{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.chip{font-size:.74rem;border:1px solid var(--line);border-radius:99px;padding:2px 10px;background:rgba(255,255,255,.4)}
+.chip.k-sei{color:var(--shu);border-color:rgba(169,59,50,.35)} .chip.k-sui{color:var(--sei);border-color:rgba(46,94,78,.35)} .chip.k-gou{color:var(--kincha);border-color:rgba(154,123,58,.45)}
+.selbar{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:.78rem;color:var(--sumi3);gap:8px}
+@media (max-width:380px){ html{font-size:15px} .kaiza .gz{flex-basis:92px} }
+/* ══ 和の意匠 v0.5 ══ */
+.tate{writing-mode:vertical-rl;text-orientation:upright;letter-spacing:.28em;line-height:1}
+/* ── 日めくりヒーロー ── */
+.hero{border-top:3px double var(--kincha);border-bottom:3px double var(--kincha);border-left:1px solid var(--line);border-right:1px solid var(--line);border-radius:6px;padding:14px 12px 0;position:relative}
+.hgrid{display:grid;grid-template-columns:40px 1fr 46px;gap:6px;align-items:stretch;min-height:212px}
+.hside{display:flex;flex-direction:column;align-items:center;gap:12px;padding-top:6px}
+.hsekki{font-size:1.02rem;font-weight:800;color:var(--sumi2)}
+.hkou{font-size:.8rem;color:var(--sumi3);letter-spacing:.22em}
+.swatch{width:13px;height:13px;border-radius:50%;border:1px solid rgba(38,34,27,.25);box-shadow:inset 0 0 0 2px rgba(247,242,231,.6)}
+.hcenter{text-align:center;display:flex;flex-direction:column;justify-content:center;gap:1px;padding-bottom:4px}
+.hyear{font-size:.78rem;color:var(--sumi3);letter-spacing:.18em}
+.hyear .wafu{color:var(--kincha);margin-left:.5em}
+.hmonth{font-size:1.06rem;font-weight:700;letter-spacing:.3em;padding-left:.3em}
+.hday{font-size:4.7rem;font-weight:800;line-height:1.04;letter-spacing:.02em;color:var(--sumi)}
+.hyoubi{font-size:.95rem;font-weight:700;letter-spacing:.34em;padding-left:.34em}
+.hkyu{font-size:.85rem;color:var(--sumi2);margin-top:5px;letter-spacing:.12em}
+.heto{font-size:.8rem;color:var(--sumi3);letter-spacing:.16em}
+.yo-sun{color:var(--shu)!important} .yo-sat{color:#3A5BA0!important}
+.inban{writing-mode:vertical-rl;text-orientation:upright;background:var(--shu);color:#F7F2E7;padding:11px 8px;border-radius:5px;font-weight:700;letter-spacing:.3em;font-size:.9rem;line-height:1;box-shadow:inset 0 0 0 1.5px rgba(247,242,231,.45),0 2px 8px rgba(169,59,50,.3)}
+.hshuku{font-size:.88rem;color:var(--sumi2);font-weight:700}
+.hfoot{margin:8px -12px 0;padding:8px 14px 9px;border-top:1px solid var(--line2);font-size:.72rem;color:var(--sumi3);text-align:center;letter-spacing:.1em;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'%3E%3Cg fill='none' stroke='%2326221B' stroke-opacity='.055'%3E%3Cpath d='M-9 18a9 9 0 0 1 18 0M9 18a9 9 0 0 1 18 0M27 18a9 9 0 0 1 18 0M0 9a9 9 0 0 1 18 0M18 9a9 9 0 0 1 18 0M-18 9a9 9 0 0 1 18 0'/%3E%3C/g%3E%3C/svg%3E")}
+.btn-wide{display:block;width:100%;margin:0 0 14px;font-family:inherit;font-size:.92rem;letter-spacing:.4em;padding:12px 0 13px;color:var(--shu);background:var(--washi3);border:1px solid rgba(169,59,50,.4);border-radius:11px;cursor:pointer;box-shadow:var(--shadow);transition:all .15s}
+.btn-wide:active{transform:scale(.985);background:rgba(169,59,50,.05)}
+/* ── 暦タブ 曜日色 ── */
+.cal th:first-child,.cal td:first-child .dn{color:var(--shu)}
+.cal th:last-child,.cal td:last-child .dn{color:#3A5BA0}
+/* ── 詳細モーダル(くわしく観る) ── */
+body.dlgopen{overflow:hidden}
+.dlg-back{position:fixed;inset:0;background:rgba(38,34,27,.48);z-index:90;display:flex;align-items:flex-end;justify-content:center;animation:fadein .2s ease}
+.dlg{background:var(--washi3);width:100%;max-width:520px;max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border-radius:16px 16px 0 0;border-top:3px double var(--kincha);padding:0 18px calc(20px + env(safe-area-inset-bottom));animation:slideup .28s cubic-bezier(.2,.8,.3,1);background-image:radial-gradient(ellipse 120% 30% at 50% 0%,rgba(154,123,58,.06),transparent 55%),repeating-linear-gradient(0deg,transparent 0 2px,rgba(38,34,27,.012) 2px 3px)}
+@keyframes slideup{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.dlg-hd{position:sticky;top:0;background:var(--washi3);display:flex;align-items:center;justify-content:space-between;padding:15px 0 10px;border-bottom:1px solid var(--line2);z-index:2}
+.dlg-title{font-size:1.06rem;font-weight:800;letter-spacing:.2em}
+.dlg-x{border:1px solid var(--line);background:none;border-radius:99px;width:32px;height:32px;font-size:1rem;color:var(--sumi2);cursor:pointer;font-family:inherit;line-height:1}
+.dsec{padding:13px 0 12px;border-bottom:1px dashed var(--line2)}
+.dsec:last-of-type{border-bottom:none}
+.dhd{font-size:.76rem;letter-spacing:.4em;color:var(--kincha);font-weight:700;margin-bottom:7px}
+.dhd::before{content:"― "} .dhd::after{content:" ―"}
+.youtei{font-size:.98rem;font-weight:700;line-height:1.9}
+.kokoroe{font-size:.95rem;color:var(--sumi2);border-left:3px solid var(--kincha2);padding:2px 0 2px 12px;margin:2px 0 10px;font-style:normal;letter-spacing:.06em}
+.dchips{display:flex;flex-wrap:wrap;gap:6px;margin:5px 0}
+.dchip{font-size:.78rem;border:1px solid rgba(46,94,78,.35);color:var(--sei);border-radius:99px;padding:3px 11px;background:rgba(255,255,255,.4)}
+.dchip.ima{border-color:rgba(169,59,50,.35);color:var(--shu)}
+.dchip.flow{border-color:var(--line);color:var(--sumi2)}
+.dlbl{font-size:.68rem;color:var(--sumi3);letter-spacing:.2em;margin:6px 0 2px}
+.dsen{font-size:.88rem;line-height:1.95}
+.issen{background:var(--washi2);border:1px solid var(--line2);border-radius:11px;padding:11px 13px;font-size:.92rem;text-align:center;letter-spacing:.04em}
+.issen b{color:var(--shu)}
+.kotoba-color{display:inline-flex;align-items:center;gap:6px}
+.kotoba-color .swatch{width:11px;height:11px}
+.dlg-close-btn{display:block;width:100%;margin-top:14px;font-family:inherit;font-size:.9rem;letter-spacing:.5em;padding:11px 0 12px;color:var(--sumi2);background:none;border:1px solid var(--line);border-radius:11px;cursor:pointer}
+/* ══ v0.6: 筆・起動円相・講 ══ */
+.fude{font-family:"Yuji Syuku","Shippori Mincho B1",serif;letter-spacing:.12em}
+.hkou{font-family:"Yuji Syuku","Shippori Mincho B1",serif}
+.kokoroe{font-family:"Yuji Syuku","Shippori Mincho B1",serif;font-size:1.05rem}
+nav{border-top:3px double var(--kincha)}
+/* 起動の円相 */
+#splash{position:fixed;inset:0;background:var(--washi);z-index:200;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;animation:splashout .5s ease 1.7s forwards;pointer-events:none}
+#splash .spc{stroke-dasharray:289;stroke-dashoffset:289;animation:spdraw 1.25s cubic-bezier(.5,.1,.4,1) .15s forwards}
+#splash .spt{font-family:"Yuji Syuku","Shippori Mincho B1",serif;font-size:2.1rem;color:var(--sumi);opacity:0;animation:spfade .6s ease .95s forwards;letter-spacing:.1em}
+#splash .sps{font-size:.66rem;color:var(--kincha);letter-spacing:.5em;opacity:0;animation:spfade .6s ease 1.15s forwards}
+@keyframes spdraw{to{stroke-dashoffset:24}}
+@keyframes spfade{to{opacity:1}}
+@keyframes splashout{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion: reduce){#splash{display:none}}
+/* 落款 */
+.rakkan{position:absolute;right:14px;top:30px;width:26px;height:26px;background:var(--shu);color:#F7F2E7;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;box-shadow:inset 0 0 0 1.2px rgba(247,242,231,.45),0 1px 5px rgba(169,59,50,.3)}
+/* 講(授業) */
+.kobtn{display:flex;align-items:center;gap:12px;background:var(--washi2);border:1px solid var(--line);border-radius:12px;padding:11px 13px;cursor:pointer;transition:background .15s}
+.kobtn:active{background:rgba(154,123,58,.1)}
+.kobtn .koico{writing-mode:vertical-rl;text-orientation:upright;background:var(--sumi);color:#F7F2E7;font-size:.72rem;padding:7px 5px;border-radius:4px;letter-spacing:.25em;flex:0 0 auto}
+.kobtn .kot{flex:1}
+.kobtn .kot b{display:block;font-size:.95rem}
+.kobtn .kot span{font-size:.7rem;color:var(--sumi3)}
+.shuin{flex:0 0 auto;width:26px;height:26px;border-radius:4px;background:var(--shu);color:#F7F2E7;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;box-shadow:inset 0 0 0 1.2px rgba(247,242,231,.4)}
+.shuin.mi{background:none;border:1px dashed var(--line);color:var(--sumi3);box-shadow:none}
+.lsn{background:var(--washi3);width:100%;max-width:520px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;border-radius:16px 16px 0 0;border-top:3px double var(--shu);padding:0 20px calc(20px + env(safe-area-inset-bottom));animation:slideup .28s cubic-bezier(.2,.8,.3,1);background-image:radial-gradient(ellipse 120% 30% at 50% 0%,rgba(154,123,58,.06),transparent 55%),repeating-linear-gradient(0deg,transparent 0 2px,rgba(38,34,27,.012) 2px 3px)}
+.lsn-hd{position:sticky;top:0;background:var(--washi3);padding:15px 0 10px;border-bottom:1px solid var(--line2);z-index:2}
+.lsn-maki{font-size:.66rem;color:var(--kincha);letter-spacing:.4em}
+.lsn-title{font-size:1.1rem;font-weight:800;letter-spacing:.06em;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.lsn-min{font-size:.66rem;color:var(--sumi3);border:1px solid var(--line);border-radius:99px;padding:2px 9px;white-space:nowrap}
+.lsn-dots{display:flex;gap:7px;justify-content:center;margin:12px 0 4px}
+.lsn-dots i{width:7px;height:7px;border-radius:50%;background:var(--washi2);border:1px solid var(--line)}
+.lsn-dots i.on{background:var(--shu);border-color:var(--shu)}
+.lsn-dan{min-height:200px;padding:14px 2px 6px}
+.lsn-danno{font-family:"Yuji Syuku","Shippori Mincho B1",serif;font-size:1rem;color:var(--shu);letter-spacing:.3em;margin-bottom:8px}
+.lsn-dant{font-size:1.02rem;font-weight:800;margin-bottom:8px;letter-spacing:.08em}
+.lsn-body{font-size:.95rem;line-height:2.05;letter-spacing:.02em;text-align:justify}
+.lsn-q{background:var(--washi2);border:1px solid var(--line2);border-left:3px solid var(--shu);border-radius:0 11px 11px 0;padding:12px 14px;font-size:.92rem;line-height:1.95;margin-top:10px}
+.lsn-q .ql{font-size:.66rem;color:var(--shu);letter-spacing:.4em;display:block;margin-bottom:4px}
+.lsn-nav{display:flex;gap:10px;margin-top:16px}
+.lsn-nav .btn,.lsn-nav .dbtn{flex:1;text-align:center}
+.lsn-done{text-align:center;padding:10px 0 2px}
+.lsn-done .shuin{width:56px;height:56px;font-size:1.5rem;margin:0 auto 8px;border-radius:8px;font-family:"Yuji Syuku","Shippori Mincho B1",serif}
+</style>
+</head>
+<body>
+<header class="wrap">
+  <svg class="enso" viewBox="0 0 100 100"><path d="M 50 8 A 42 42 0 1 0 78 18" fill="none" stroke="#A93B32" stroke-width="4.5" stroke-linecap="round" opacity=".55"/></svg>
+  <div class="brand">巡<small>め ぐ り — 王道學九性氣學</small></div>
+  <div class="rakkan">巡</div>
+</header>
+<div id="splash" aria-hidden="true"><svg width="120" height="120" viewBox="0 0 120 120"><circle class="spc" cx="60" cy="60" r="46" fill="none" stroke="#A93B32" stroke-width="5.5" stroke-linecap="round" transform="rotate(-80 60 60)"/></svg><div class="spt">巡</div><div class="sps">めぐり</div></div>
+<main class="wrap" id="app"></main>
+<nav><div class="tabs" id="tabs"></div></nav>
+<script>
+/* ============================================================
+ * 巡(めぐり) engine.js — 暦エンジン v0.3
+ * 日干支 / 年月日家九星 / 二十四節気(節切り) / 旧暦(Meeus朔+中気法・閏対応)
+ * 雑節(土用) / 回座(palaceOf) / 盤面(boardStars)
+ * すべてJST基準。外部依存なし・オンデバイス完結。
+ * ============================================================ */
+"use strict";
+var RAD = Math.PI / 180;
+
+/* ---------- ユリウス日 ---------- */
+function jdFromYMD(y, m, d, hour) { // hour: JST時(小数可) → JD(UT)
+  if (hour === undefined) hour = 12; // 正午既定
+  var hUT = hour - 9; // JST→UT
+  if (m <= 2) { y -= 1; m += 12; }
+  var A = Math.floor(y / 100);
+  var B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5 + hUT / 24;
+}
+function jdnJST(y, m, d) { // JST日付の通し番号(整数)
+  return Math.round(jdFromYMD(y, m, d, 12) + 9 / 24 - 0.5);
+}
+function ymdFromJD(jd) { // JD(UT)→JST日付 {y,m,d}
+  var z = Math.floor(jd + 0.5 + 9 / 24), f = (jd + 0.5 + 9 / 24) - z;
+  var A = z;
+  if (z >= 2299161) { var al = Math.floor((z - 1867216.25) / 36524.25); A = z + 1 + al - Math.floor(al / 4); }
+  var Bb = A + 1524, C = Math.floor((Bb - 122.1) / 365.25), D = Math.floor(365.25 * C), E = Math.floor((Bb - D) / 30.6001);
+  var day = Bb - D - Math.floor(30.6001 * E);
+  var mon = (E < 14) ? E - 1 : E - 13;
+  var yr = (mon > 2) ? C - 4716 : C - 4715;
+  return { y: yr, m: mon, d: day, frac: f };
+}
+function deltaT(y) { // TT-UT 秒(2000〜2100近似で十分)
+  var t = (y - 2000);
+  return 63.86 + 0.3345 * t - 0.0000098 * t * t + 0.0000087 * t * t * t * 0; // ~2026で約72s級近似
+}
+
+/* ---------- 太陽黄経 (Meeus 低精度・±0.01°) ---------- */
+function sunLon(jd) {
+  var T = (jd - 2451545.0) / 36525;
+  var L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+  var M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
+  var C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(M * RAD)
+        + (0.019993 - 0.000101 * T) * Math.sin(2 * M * RAD)
+        + 0.000289 * Math.sin(3 * M * RAD);
+  var Om = 125.04 - 1934.136 * T;
+  var lon = L0 + C - 0.00569 - 0.00478 * Math.sin(Om * RAD);
+  lon = lon % 360; if (lon < 0) lon += 360;
+  return lon;
+}
+/* 目標黄経targetに達する瞬間(JD, TT→UT補正込)を二分探索 */
+function solarTermJD(y, target) {
+  // 概算開始点: 春分(0°)≈3/20。280°超(立春・小寒・大寒等)は年初側にとる
+  var off = target <= 280 ? target : target - 360;
+  var approxDoY = 79 + off * 365.2422 / 360; // 春分基準
+  var jd0 = jdFromYMD(y, 1, 0, 12) + approxDoY;
+  var lo = jd0 - 20, hi = jd0 + 20;
+  function diff(jd) { var d = sunLon(jd) - target; while (d > 180) d -= 360; while (d < -180) d += 360; return d; }
+  // 単調区間へ絞る
+  while (diff(lo) > 0) lo -= 10;
+  while (diff(hi) < 0) hi += 10;
+  for (var i = 0; i < 60; i++) { var mid = (lo + hi) / 2; if (diff(mid) < 0) lo = mid; else hi = mid; }
+  var jdTT = (lo + hi) / 2;
+  return jdTT - deltaT(y) / 86400; // →UT
+}
+/* 二十四節気: 315°=立春から15°刻み */
+var SEKKI = ["立春","雨水","啓蟄","春分","清明","穀雨","立夏","小満","芒種","夏至","小暑","大暑",
+             "立秋","処暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至","小寒","大寒"];
+function sekkiLon(i) { return (315 + 15 * i) % 360; }
+/* 年yの節気i(暦年内に来るものをJST日付で) */
+function sekkiDate(y, i) {
+  var lon = sekkiLon(i);
+  // 小寒・大寒(285,300°)は暦年1月 → 計算年に注意
+  var yy = y;
+  var jd = solarTermJD(yy, lon);
+  var d = ymdFromJD(jd);
+  if (d.y !== y) { jd = solarTermJD(lon >= 285 && lon < 315 ? y : (d.y < y ? y + 1 : y - 1), lon); d = ymdFromJD(jd); }
+  return { y: d.y, m: d.m, d: d.d, jd: jd, name: SEKKI[i], lon: lon };
+}
+/* その暦年の全節気(1月小寒〜12月冬至の順で並べ替え) */
+var _sekkiCache = {};
+function sekkiOfYear(y) {
+  if (_sekkiCache[y]) return _sekkiCache[y];
+  var arr = [];
+  for (var i = 0; i < 24; i++) {
+    var lon = sekkiLon(i);
+    // 探索の中心年: 立春(315)〜冬至(270)は当年、小寒(285)大寒(300)は当年1月
+    var jd = solarTermJD(y, lon);
+    var d = ymdFromJD(jd);
+    if (d.y < y) { jd = solarTermJD(y + 1, lon); d = ymdFromJD(jd); }
+    if (d.y > y) { jd = solarTermJD(y - 1, lon); d = ymdFromJD(jd); }
+    if (d.y === y) arr.push({ name: SEKKI[i], lon: lon, y: d.y, m: d.m, d: d.d, jd: jd });
+  }
+  arr.sort(function (a, b) { return a.jd - b.jd; });
+  _sekkiCache[y] = arr;
+  return arr;
+}
+
+/* ---------- 節切り: 節月と年境(立春) ---------- */
+var SETSU_LON = [315,345,15,45,75,105,135,165,195,225,255,285]; // 寅卯辰巳午未申酉戌亥子丑 月の節入黄経
+var MONTH_BRANCH = ["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"];
+var _setsuListCache = {};
+function _setsuList(y) { // y-1..y+1の全節入をJDN昇順で
+  if (_setsuListCache[y]) return _setsuListCache[y];
+  var list = [];
+  for (var yy = y - 1; yy <= y + 1; yy++) {
+    for (var i = 0; i < 12; i++) {
+      var sj = solarTermJD(yy, SETSU_LON[i]);
+      var sd = ymdFromJD(sj);
+      list.push({ jdn: jdnJST(sd.y, sd.m, sd.d), mIdx: i, y: sd.y, m: sd.m, d: sd.d });
+    }
+  }
+  list.sort(function (a, b) { return a.jdn - b.jdn; });
+  _setsuListCache[y] = list;
+  return list;
+}
+function setsuMonth(y, m, d) { // → {eYear, mIdx(0=寅), branch, entry}
+  var jd = jdnJST(y, m, d);
+  var list = _setsuList(y);
+  var cur = null, lastRisshun = null;
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].jdn <= jd) {
+      cur = list[i];
+      if (list[i].mIdx === 0) lastRisshun = list[i];
+    } else break;
+  }
+  var eYear = lastRisshun ? lastRisshun.y : y - 1;
+  return { eYear: eYear, mIdx: cur ? cur.mIdx : 11, branch: MONTH_BRANCH[cur ? cur.mIdx : 11], entry: cur };
+}
+
+/* ---------- 干支 ---------- */
+var KAN = ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
+var SHI12 = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+function eto(idx) { return KAN[idx % 10] + SHI12[idx % 12]; }
+/* 日干支: アンカー 2026-06-19 = 甲子(0) */
+var _dayEtoAnchor = null;
+function dayEtoIdx(y, m, d) {
+  if (_dayEtoAnchor === null) _dayEtoAnchor = jdnJST(2026, 6, 19);
+  var n = (jdnJST(y, m, d) - _dayEtoAnchor) % 60;
+  return (n + 60) % 60;
+}
+function dayEto(y, m, d) { return eto(dayEtoIdx(y, m, d)); }
+/* 年干支(立春切り) */
+function yearEto(eYear) { var i = ((eYear - 4) % 60 + 60) % 60; return { kan: KAN[i % 10], shi: SHI12[i % 12], str: eto(i), shiIdx: i % 12 }; }
+
+/* ---------- 九星 ---------- */
+/* 年家: 立春切り。2025=二黒, 2026=一白 */
+function yearStar(eYear) { var s = (11 - (eYear % 9)) % 9; return s === 0 ? 9 : s; }
+/* 月家: 年支グループで寅月の星が決まり毎月-1(陰遁) */
+function monthStar(eYear, mIdx) {
+  var g = ((eYear - 4) % 12 + 12) % 12; // 0=子
+  var start; // 寅月の星
+  if (g % 3 === 0) start = 8;      // 子午卯酉
+  else if (g % 3 === 1) start = 5; // 丑未辰戌 → g:丑=1,辰=4,未=7,戌=10 → %3=1
+  else start = 2;                  // 寅巳申亥
+  var s = ((start - mIdx) % 9 + 9) % 9; return s === 0 ? 9 : s;
+}
+/* 日家: 陽遁/陰遁。アンカー: 2026-06-19 甲子 = 陰遁始(九紫)。
+ * 切替は冬至・夏至に最も近い甲子日(前後30日以内)。 */
+var _tonCache = null;
+function _buildTonTable() {
+  // 1950〜2100の切替甲子日を生成
+  var table = [];
+  for (var y = 1949; y <= 2101; y++) {
+    var solst = [{ lon: 270, yy: y }, { lon: 90, yy: y }]; // 冬至(陽遁始), 夏至(陰遁始)
+    for (var k = 0; k < 2; k++) {
+      var jd = solarTermJD(solst[k].yy, solst[k].lon);
+      var dd = ymdFromJD(jd);
+      var base = jdnJST(dd.y, dd.m, dd.d);
+      // 最寄りの甲子
+      var idx = dayEtoIdx(dd.y, dd.m, dd.d);
+      var back = base - idx;             // 直前(当日含む)の甲子
+      var fwd = back + 60;               // 次の甲子
+      var pick = (base - back <= fwd - base) ? back : fwd;
+      table.push({ jdn: pick, mode: (solst[k].lon === 270) ? 1 : -1 }); // 1=陽遁, -1=陰遁
+    }
+  }
+  table.sort(function (a, b) { return a.jdn - b.jdn; });
+  return table;
+}
+function tonMode(y, m, d) { // 1=陽遁, -1=陰遁
+  if (!_tonCache) _tonCache = _buildTonTable();
+  var j = jdnJST(y, m, d), seg = null;
+  for (var i = 0; i < _tonCache.length; i++) { if (_tonCache[i].jdn <= j) seg = _tonCache[i]; else break; }
+  return seg ? seg.mode : 1;
+}
+function dayStar(y, m, d) {
+  if (!_tonCache) _tonCache = _buildTonTable();
+  var j = jdnJST(y, m, d);
+  var seg = null;
+  for (var i = 0; i < _tonCache.length; i++) { if (_tonCache[i].jdn <= j) seg = _tonCache[i]; else break; }
+  if (!seg) return 5;
+  var n = j - seg.jdn;
+  if (seg.mode === 1) { var s = (1 + n) % 9; return s === 0 ? 9 : s; }       // 陽遁: 甲子=一白, 昇順
+  else { var s2 = ((9 - n) % 9 + 9) % 9; return s2 === 0 ? 9 : s2; }          // 陰遁: 甲子=九紫, 降順
+}
+
+/* ---------- 盤面・回座 ---------- */
+/* 定位番号: 1坎 2坤 3震 4巽 5中 6乾 7兌 8艮 9離 */
+var PALACE_NAME = { 1: "坎", 2: "坤", 3: "震", 4: "巽", 5: "中", 6: "乾", 7: "兌", 8: "艮", 9: "離" };
+function palaceOf(center, star) { // 中宮centerの盤で星starが座す宮(定位番号)
+  var d = ((star - center + 4) % 9 + 9) % 9 + 1;
+  return d;
+}
+function boardStars(center) { // 定位番号→星
+  var o = {};
+  for (var p = 1; p <= 9; p++) o[p] = ((center + p - 6) % 9 + 9) % 9 + 1;
+  return o;
+}
+
+/* ---------- 旧暦 (Meeus朔 + 中気法・閏対応) ---------- */
+function meanNewMoonK(y, m) { return Math.floor((y + (m - 0.5) / 12 - 2000) * 12.3685); }
+function newMoonJD(k) { // Meeus ch.49 主要項 → JD(UT)
+  var T = k / 1236.85, T2 = T * T, T3 = T2 * T, T4 = T3 * T;
+  var JDE = 2451550.09766 + 29.530588861 * k + 0.00015437 * T2 - 0.000000150 * T3 + 0.00000000073 * T4;
+  var E = 1 - 0.002516 * T - 0.0000074 * T2;
+  var M = (2.5534 + 29.10535670 * k - 0.0000014 * T2 - 0.00000011 * T3) * RAD;
+  var Mp = (201.5643 + 385.81693528 * k + 0.0107582 * T2 + 0.00001238 * T3 - 0.000000058 * T4) * RAD;
+  var F = (160.7108 + 390.67050284 * k - 0.0016118 * T2 - 0.00000227 * T3 + 0.000000011 * T4) * RAD;
+  var Om = (124.7746 - 1.56375588 * k + 0.0020672 * T2 + 0.00000215 * T3) * RAD;
+  var c = -0.40720 * Math.sin(Mp) + 0.17241 * E * Math.sin(M) + 0.01608 * Math.sin(2 * Mp)
+        + 0.01039 * Math.sin(2 * F) + 0.00739 * E * Math.sin(Mp - M) - 0.00514 * E * Math.sin(Mp + M)
+        + 0.00208 * E * E * Math.sin(2 * M) - 0.00111 * Math.sin(Mp - 2 * F) - 0.00057 * Math.sin(Mp + 2 * F)
+        + 0.00056 * E * Math.sin(2 * Mp + M) - 0.00042 * Math.sin(3 * Mp) + 0.00042 * E * Math.sin(M + 2 * F)
+        + 0.00038 * E * Math.sin(M - 2 * F) - 0.00024 * E * Math.sin(2 * Mp - M) - 0.00017 * Math.sin(Om)
+        - 0.00007 * Math.sin(Mp + 2 * M) + 0.00004 * Math.sin(2 * Mp - 2 * F) + 0.00004 * Math.sin(3 * M)
+        + 0.00003 * Math.sin(Mp + M - 2 * F) + 0.00003 * Math.sin(2 * Mp + 2 * F) - 0.00003 * Math.sin(Mp + M + 2 * F)
+        + 0.00003 * Math.sin(Mp - M + 2 * F) - 0.00002 * Math.sin(Mp - M - 2 * F) - 0.00002 * Math.sin(3 * Mp + M)
+        + 0.00002 * Math.sin(4 * Mp);
+  var A = 0.000325 * Math.sin((299.77 + 0.107408 * k - 0.009173 * T2) * RAD)
+        + 0.000165 * Math.sin((251.88 + 0.016321 * k) * RAD)
+        + 0.000164 * Math.sin((251.83 + 26.651886 * k) * RAD)
+        + 0.000126 * Math.sin((349.42 + 36.412478 * k) * RAD)
+        + 0.000110 * Math.sin((84.66 + 18.206239 * k) * RAD)
+        + 0.000062 * Math.sin((141.74 + 53.303771 * k) * RAD)
+        + 0.000060 * Math.sin((207.14 + 2.453732 * k) * RAD)
+        + 0.000056 * Math.sin((154.84 + 7.306860 * k) * RAD)
+        + 0.000047 * Math.sin((34.52 + 27.261239 * k) * RAD)
+        + 0.000042 * Math.sin((207.19 + 0.121824 * k) * RAD)
+        + 0.000040 * Math.sin((291.34 + 1.844379 * k) * RAD)
+        + 0.000037 * Math.sin((161.72 + 24.198154 * k) * RAD)
+        + 0.000035 * Math.sin((239.56 + 25.513099 * k) * RAD)
+        + 0.000023 * Math.sin((331.55 + 3.592518 * k) * RAD);
+  var jdTT = JDE + c + A;
+  var yApprox = 2000 + k / 12.3685;
+  return jdTT - deltaT(yApprox) / 86400; // → UT
+}
+/* 中気(黄経30°倍数)テーブル: 月番号との対応 */
+function chukiMonthNum(lon) { // 330=1月 … 300=12月
+  var n = Math.round(((lon - 330 + 720) % 360) / 30) + 1;
+  return n;
+}
+/* 旧暦計算: JST日付→{month, day, leap, monthShukuBase} */
+var _kyurekiCache = {};
+function kyureki(y, m, d) {
+  var key = y + "-" + m + "-" + d;
+  if (_kyurekiCache[key]) return _kyurekiCache[key];
+  var jTarget = jdnJST(y, m, d);
+  // 前年冬至〜翌年冬至+αの朔を列挙
+  var wsPrev = solarTermJD(y - 1, 270), wsPrevD = ymdFromJD(wsPrev);
+  var wsCur = solarTermJD(y, 270);
+  var wsNext = solarTermJD(y + 1, 270);
+  // 朔リスト(JST日付JDN)
+  var k0 = meanNewMoonK(y - 1, 10);
+  var moons = [];
+  for (var k = k0; k < k0 + 32; k++) {
+    var nm = newMoonJD(k);
+    var dd = ymdFromJD(nm);
+    moons.push({ jdn: jdnJST(dd.y, dd.m, dd.d), jd: nm });
+  }
+  // 中気リスト(前年10月〜翌年2月ぶんの黄経30°倍数)
+  var chuki = [];
+  for (var yy = y - 1; yy <= y + 1; yy++) {
+    for (var i = 0; i < 12; i++) {
+      var lon = i * 30; // 0,30,...330
+      var cj = solarTermJD(yy, lon);
+      var cd = ymdFromJD(cj);
+      if (cd.y === yy) chuki.push({ jdn: jdnJST(cd.y, cd.m, cd.d), num: chukiMonthNum(lon) });
+    }
+  }
+  chuki.sort(function (a, b) { return a.jdn - b.jdn; });
+  // 各朔月に含まれる中気を割当て → 冬至(11月)基準で番号付け
+  function monthsBetween(wsA, wsB) {
+    var a = ymdFromJD(wsA), b = ymdFromJD(wsB);
+    var ja = jdnJST(a.y, a.m, a.d), jb = jdnJST(b.y, b.m, b.d);
+    var list = [];
+    for (var i = 0; i < moons.length - 1; i++) {
+      if (moons[i + 1].jdn > ja && moons[i].jdn <= jb) {
+        list.push({ start: moons[i].jdn, end: moons[i + 1].jdn - 1 });
+      }
+    }
+    // ws Aを含む月から wsBを含む月まで
+    var si = -1, ei = -1;
+    for (var i2 = 0; i2 < list.length; i2++) {
+      if (ja >= list[i2].start && ja <= list[i2].end) si = i2;
+      if (jb >= list[i2].start && jb <= list[i2].end) ei = i2;
+    }
+    if (si < 0 || ei < 0 || ei < si) return [];
+    return list.slice(si, ei + 1);
+  }
+  var span = monthsBetween(wsPrev, wsCur);
+  var span2 = monthsBetween(wsCur, wsNext);
+  function labelSpan(span) {
+    // span[0]=11月。13ヶ月なら閏あり
+    var leapUsed = false;
+    var labels = [];
+    var num = 11;
+    for (var i = 0; i < span.length; i++) {
+      if (i === 0) { labels.push({ num: 11, leap: false }); continue; }
+      // 中気を含むか
+      var has = false;
+      for (var c = 0; c < chuki.length; c++) {
+        if (chuki[c].jdn >= span[i].start && chuki[c].jdn <= span[i].end) { has = true; break; }
+      }
+      if (span.length >= 14 && !has && !leapUsed) {
+        labels.push({ num: labels[labels.length - 1].num, leap: true });
+        leapUsed = true;
+      } else {
+        num = labels[labels.length - 1].num % 12 + 1;
+        // 閏月の次は前の本月+1
+        if (labels[labels.length - 1].leap) num = labels[labels.length - 1].num % 12 + 1;
+        labels.push({ num: num, leap: false });
+      }
+    }
+    return labels;
+  }
+  var lab1 = labelSpan(span), lab2 = labelSpan(span2);
+  var all = [];
+  for (var i3 = 0; i3 < span.length; i3++) all.push({ start: span[i3].start, end: span[i3].end, num: lab1[i3].num, leap: lab1[i3].leap });
+  for (var i4 = 0; i4 < span2.length; i4++) {
+    // 重複月(冬至月)はスキップ
+    if (all.length && span2[i4].start <= all[all.length - 1].start) continue;
+    all.push({ start: span2[i4].start, end: span2[i4].end, num: lab2[i4].num, leap: lab2[i4].leap });
+  }
+  var res = null;
+  for (var i5 = 0; i5 < all.length; i5++) {
+    if (jTarget >= all[i5].start && jTarget <= all[i5].end) {
+      res = { month: all[i5].num, day: jTarget - all[i5].start + 1, leap: all[i5].leap };
+      break;
+    }
+  }
+  if (!res) res = { month: 0, day: 0, leap: false };
+  _kyurekiCache[key] = res;
+  return res;
+}
+
+
+/* ---------- 七十二候(略本暦・太陽黄経5°刻み) ---------- */
+var KOU72 = [
+["東風解凍","はるかぜこおりをとく"],["黄鶯睍睆","うぐいすなく"],["魚上氷","うおこおりをいずる"],
+["土脉潤起","つちのしょううるおいおこる"],["霞始靆","かすみはじめてたなびく"],["草木萌動","そうもくめばえいずる"],
+["蟄虫啓戸","すごもりむしとをひらく"],["桃始笑","ももはじめてさく"],["菜虫化蝶","なむしちょうとなる"],
+["雀始巣","すずめはじめてすくう"],["桜始開","さくらはじめてひらく"],["雷乃発声","かみなりすなわちこえをはっす"],
+["玄鳥至","つばめきたる"],["鴻雁北","こうがんかえる"],["虹始見","にじはじめてあらわる"],
+["葭始生","あしはじめてしょうず"],["霜止出苗","しもやみてなえいずる"],["牡丹華","ぼたんはなさく"],
+["蛙始鳴","かわずはじめてなく"],["蚯蚓出","みみずいずる"],["竹笋生","たけのこしょうず"],
+["蚕起食桑","かいこおきてくわをはむ"],["紅花栄","べにばなさかう"],["麦秋至","むぎのときいたる"],
+["螳螂生","かまきりしょうず"],["腐草為螢","くされたるくさほたるとなる"],["梅子黄","うめのみきばむ"],
+["乃東枯","なつかれくさかるる"],["菖蒲華","あやめはなさく"],["半夏生","はんげしょうず"],
+["温風至","あつかぜいたる"],["蓮始開","はすはじめてひらく"],["鷹乃学習","たかすなわちわざをならう"],
+["桐始結花","きりはじめてはなをむすぶ"],["土潤溽暑","つちうるおうてむしあつし"],["大雨時行","たいうときどきふる"],
+["涼風至","すずかぜいたる"],["寒蝉鳴","ひぐらしなく"],["蒙霧升降","ふかききりまとう"],
+["綿柎開","わたのはなしべひらく"],["天地始粛","てんちはじめてさむし"],["禾乃登","こくものすなわちみのる"],
+["草露白","くさのつゆしろし"],["鶺鴒鳴","せきれいなく"],["玄鳥去","つばめさる"],
+["雷乃収声","かみなりすなわちこえをおさむ"],["蟄虫坏戸","むしかくれてとをふさぐ"],["水始涸","みずはじめてかるる"],
+["鴻雁来","こうがんきたる"],["菊花開","きくのはなひらく"],["蟋蟀在戸","きりぎりすとにあり"],
+["霜始降","しもはじめてふる"],["霎時施","こさめときどきふる"],["楓蔦黄","もみじつたきばむ"],
+["山茶始開","つばきはじめてひらく"],["地始凍","ちはじめてこおる"],["金盞香","きんせんかさく"],
+["虹蔵不見","にじかくれてみえず"],["朔風払葉","きたかぜこのはをはらう"],["橘始黄","たちばなはじめてきばむ"],
+["閉塞成冬","そらさむくふゆとなる"],["熊蟄穴","くまあなにこもる"],["鱖魚群","さけのうおむらがる"],
+["乃東生","なつかれくさしょうず"],["麋角解","さわしかのつのおつる"],["雪下出麦","ゆきわたりてむぎのびる"],
+["芹乃栄","せりすなわちさかう"],["水泉動","しみずあたたかをふくむ"],["雉始雊","きじはじめてとやにつく"],
+["款冬華","ふきのはなさく"],["水沢腹堅","さわみずこおりつめる"],["鶏始乳","にわとりはじめてとやにつく"]
+];
+KOU72[71]=["鶏始乳","にわとりはじめてにゅうす"];
+KOU72[68]=["雉始雊","きじはじめてなく"];
+function _lonCrossNear(jdNoon, target) { // targetを跨ぐ瞬間(±8日窓)。無ければnull
+  var lo = jdNoon - 8, hi = jdNoon + 8;
+  function diff(jd) { var dd = (sunLon(jd) - target) % 360; if (dd > 180) dd -= 360; if (dd < -180) dd += 360; return dd; }
+  if (diff(lo) > 0 || diff(hi) < 0) return null;
+  for (var i = 0; i < 50; i++) { var mid = (lo + hi) / 2; if (diff(mid) < 0) lo = mid; else hi = mid; }
+  var jdTT = (lo + hi) / 2;
+  var yy = ymdFromJD(jdTT).y;
+  return jdTT - deltaT(yy) / 86400;
+}
+function kouOf(y, m, d) { // その日の候。略本暦式: 切替瞬間を含む日から新しい候
+  var jd = jdFromYMD(y, m, d, 12);
+  var lon = sunLon(jd);
+  var rel = ((lon - 315) % 360 + 360) % 360;   // 立春=0起点
+  var gIdx = Math.floor(rel / 5) % 72;          // 候(0..71) 正午黄経の仮判定
+  // 次候の切替瞬間が「今日」なら繰り上げ(瞬間を含む日は新候)
+  var nextLon = (315 + 5 * (gIdx + 1)) % 360;
+  var cj = _lonCrossNear(jd, nextLon);
+  if (cj !== null) {
+    var cd = ymdFromJD(cj);
+    if (jdnJST(cd.y, cd.m, cd.d) <= jdnJST(y, m, d)) gIdx = (gIdx + 1) % 72;
+  }
+  var sIdx = Math.floor(gIdx / 3) % 24;         // 気(0..23, 立春起点)
+  var pos = gIdx % 3;                           // 0初候 1次候 2末候
+  return { idx: gIdx, name: KOU72[gIdx][0], yomi: KOU72[gIdx][1],
+           pos: pos, posName: ["初候","次候","末候"][pos],
+           sekki: SEKKI[sIdx], sekkiIdx: sIdx };
+}
+
+/* ---------- 雑節: 土用 ---------- */
+function doyoInfo(y, m, d) {
+  // 土用入り: 黄経27,117,207,297° / 明け: 次の四立前日
+  var jd = jdnJST(y, m, d);
+  var starts = [27, 117, 207, 297], ritsu = [45, 135, 225, 315];
+  var names = ["春の土用", "夏の土用", "秋の土用", "冬の土用"];
+  for (var yy = y - 1; yy <= y; yy++) {
+    for (var i = 0; i < 4; i++) {
+      var s = solarTermJD(yy, starts[i]); var sD = ymdFromJD(s);
+      var e = solarTermJD(sD.m > 10 ? yy + 1 : yy, ritsu[i]); var eD = ymdFromJD(e);
+      var sj = jdnJST(sD.y, sD.m, sD.d), ej = jdnJST(eD.y, eD.m, eD.d) - 1;
+      if (jd >= sj && jd <= ej) return { name: names[i], dayN: jd - sj + 1 };
+    }
+  }
+  return null;
+}
+
+/* ---------- 和暦 ---------- */
+function wareki(y) {
+  if (y >= 2019) return "令和" + (y - 2018 === 1 ? "元" : y - 2018) + "年";
+  if (y >= 1989) return "平成" + (y - 1988 === 1 ? "元" : y - 1988) + "年";
+  if (y >= 1926) return "昭和" + (y - 1925 === 1 ? "元" : y - 1925) + "年";
+  return y + "年";
+}
+
+/* ============================================================
+ * 巡(めぐり) odo.js — 王道學・九性氣學レイヤー v0.3
+ * バイオリズム九期 / 気力レベル×二十の特性 / 十二支字義・支合冲
+ * 宿曜二十七宿(補完体系) / 四柱の九性 / 期×気力×本命の指針文面
+ * ※二十の特性ラベル・各解説文は原典要旨の仮要約。正式版は
+ *   徳山暉純先生サイドの監修・使用許諾を要する(設計書六章)。
+ * ============================================================ */
+"use strict";
+
+/* ---------- バイオリズム九期(回座宮番号→期) ---------- */
+var PHASE = {
+  2: { no: 1, name: "第1盛運期", kind: "盛", kei: "坤為地", meidai: "上徳如谷、無償の愛と堅実", season: "春", h: 26,
+       guide: "新しい九年の芽生え。谷のように低く構え、無償の愛と堅実さで土台を耕すとき。種を蒔き、人を育て、信を積む。", caution: "" },
+  3: { no: 2, name: "第2盛運期", kind: "盛", kei: "震為雷", meidai: "勇気とヒラメキ", season: "春", h: 45,
+       guide: "雷鳴のごとく動き出すとき。ヒラメキを恐れず声に出し、勇気をもって一歩を踏み出す。行動が運を連れてくる。", caution: "" },
+  4: { no: 3, name: "第3盛運期", kind: "盛", kei: "巽為風", meidai: "信用と奉仕の精神", season: "春〜夏", h: 66,
+       guide: "九年に一度の幸運期。風のように広く行き渡り、信用と奉仕で縁を結ぶ。遠方・交流・整えごとが実を結ぶ。", caution: "" },
+  5: { no: 4, name: "第4盛運期", kind: "盛", kei: "戊・己", meidai: "成功と忍耐力", season: "夏", h: 84,
+       guide: "中央に立つ充実のとき。成果が形になるが、実るほど頭を垂れる稲穂たれ。忍耐と謙虚が成功を本物にする。", caution: "慢心" },
+  6: { no: 0, name: "盛衰合期", kind: "合", kei: "乾為天", meidai: "創造力とリーダーシップ", season: "夏〜秋", h: 90,
+       guide: "波の頂。創造力とリーダーシップが最大化する一方、気力がオーバーヒートしやすい。天の力を借り、独走ではなく統率を。", caution: "過度" },
+  7: { no: 2, name: "第2衰運期", kind: "衰", kei: "兌為澤", meidai: "言葉の創生力と豊かさ", season: "秋", h: 68,
+       guide: "九年に一度の決算期。実りを収穫し、言葉で喜びを分かち合うとき。収支を締め、感謝を口にし、次の種銭を残す。", caution: "" },
+  8: { no: 3, name: "第3衰運期", kind: "衰", kei: "艮為山", meidai: "イノベーションと不動心", season: "秋〜冬", h: 42,
+       guide: "変わり目の山。動かぬ心で自らを組み替えるイノベーションのとき。継ぐもの・捨てるものを静かに仕分ける。", caution: "" },
+  9: { no: 4, name: "第4衰運期", kind: "衰", kei: "離為火", meidai: "感性と熱意での人生の向上", season: "冬", h: 24,
+       guide: "内なる火が外に現れる浮上効果のとき。感性と熱意を公開し、名を明らかにする。隠れた努力が照らし出される。", caution: "" },
+  1: { no: 5, name: "第5衰運期", kind: "衰", kei: "坎為水", meidai: "柔軟な心と誠実な生き方", season: "冬", h: 8,
+       guide: "九年の最深部。水のように低く静かに、内面を満たすとき。学び・充電・信頼の补修に徹し、大きな決断は急がない。", caution: "判断ミス" }
+};
+/* 春夏秋冬カーブの並び順(坤→坎) */
+var CYC = [2, 3, 4, 5, 6, 7, 8, 9, 1];
+
+/* ---------- 気力レベル ---------- */
+function kiryoku(n) {
+  if (n >= 18) return { level: "元気", cls: "genki", rank: 5, desc: "満ちて余りある気力。人に分け与えるほどの生気。" };
+  if (n >= 14) return { level: "生気", cls: "seiki", rank: 4, desc: "盛運・衰運を問わず常勝する気力の水準。" };
+  if (n >= 10) return { level: "活気", cls: "kakki", rank: 3, desc: "日々を回す活きた気。あと一歩で常勝圏。" };
+  if (n >= 6) return { level: "退気", cls: "taiki", rank: 2, desc: "気が退きはじめている。特性の実践で立て直しを。" };
+  return { level: "滅気", cls: "mekki", rank: 1, desc: "放置すれば病に堕ちる水準。まず一つ、特性を行に。" };
+}
+function isJoushou(n) { return n >= 10; } // 生気系(元気・生気・活気)=常勝圏
+
+/* ---------- 二十の特性(9性×20)【原典より要校正・仮要約】 ---------- */
+var TOKUSEI = {
+  1: ["水のように柔軟に対応した","誠実に約束を守った","人の話を最後まで聴いた","謙虚に低い所に身を置いた","苦境でも歩みを止めなかった","打ち明け話・秘密を守った","静かな時間で内省した","悲しむ人に寄り添った","新しい知恵を一つ学んだ","感情的にならず冷静を保った","流れに順応しつつ芯を守った","根気強く物事に浸透した","清濁併せ呑む度量を示した","身体を温め休息を取った","水回りを清めた","井戸を掘った人を思い感謝した","縁の下で人を支えた","直感を信じて動いた","一人の時間で充電した","誠を尽くし裏切らなかった"],
+  2: ["見返りを求めず人に尽くした","大地のように受け容れた","コツコツと堅実に積み上げた","土に触れ・足元を整えた","母のような慈しみを注いだ","地味な仕事を丁寧にやり切った","古いものを大切に手入れした","人を育てる言葉をかけた","質素・倹約を心がけた","約束の時間・段取りを守った","縁の始まりに種を蒔いた","目立たぬ善行を一つ行った","土台となる基本を反復した","家庭・職場の環境を整えた","勤勉に働き汗を流した","従うべきときに素直に従った","食を大切にいただいた","忍耐強く結果を待った","皆の世話役を買って出た","上徳如谷——谷の低さに学んだ"],
+  3: ["ヒラメキをすぐ行動に移した","朝一番に元気な声を出した","新しいことに挑戦した","若々しい好奇心を発揮した","音・音楽で場を明るくした","決断を先送りしなかった","勇気を出して本音を伝えた","フットワーク軽く動いた","失敗を恐れず試した","前向きな言葉で場を震わせた","身体を動かし汗をかいた","朝日を浴びて一日を始めた","停滞した空気を打ち破った","初心を思い出した","新芽・若木のような成長を志した","雷のような集中で片付けた","嘘偽りなく発言した","人を励まし奮い立たせた","スピードで信頼に応えた","びっくりする位の一歩を踏んだ"],
+  4: ["信用を積む約束を果たした","風のように広く交流した","遠方の人に便りを送った","整理整頓し風を通した","人と人の縁を結んだ","柔らかな物腰で調和した","奉仕の心で一肌脱いだ","情報を惜しみなく共有した","旅・移動で見聞を広げた","香り・身だしなみを整えた","相手に合わせ言葉を選んだ","縁の糸を丁寧に手繰った","呼吸を整え心を鎮めた","評判に恥じぬ振る舞いをした","往来する人を笑顔で迎えた","しなやかに方針を調整した","木々の緑に触れた","世間の風向きを読んだ","恩を受けた人に報いた","信用第一で商いをした"],
+  5: ["中心に立つ責任を引き受けた","忍耐強く土壇場を支えた","破壊すべき悪弊を断った","再生への一歩を踏み出した","八方に目を配り采配した","腹を据えて決断した","土性の粘りでやり抜いた","威張らず皆に帽子を脱いだ","窮地の人に手を差し伸べた","古い自分を壊し脱皮した","全体最適で物事を裁いた","責任を人に転嫁しなかった","大地の徳で包み込んだ","極端を避け中庸を保った","土用の節目に体を労った","過去の失敗を糧に変えた","帝王の孤独に耐えた","實るほど頭を垂れた","仲間の失敗を引き受けた","成功と忍耐力を両輪にした"],
+  6: ["天の理に適う行いをした","創造的な仕事に打ち込んだ","リーダーとして先頭に立った","完全を期して仕上げた","目上・天への敬意を表した","公明正大に裁いた","率先垂範で範を示した","高い理想を掲げ直した","時間を厳守した","質の良いものを長く使った","独断でなく衆知を集めた","身体を鍛え頭を垂れた","勝負所で腹を括った","部下・後進に道を譲った","天命を思い祈った","丸く円満に収めた","権威に驕らなかった","スケールの大きな構想を描いた","動きて休まず精進した","創造力とリーダーシップを磨いた"],
+  7: ["喜びを言葉にして伝えた","笑顔で場を和ませた","収支を確かめ無駄を締めた","悦びの食卓を囲んだ","話術より傾聴を選んだ","実りに感謝を口にした","少女のような愛嬌を示した","口は禍の門——言葉を慎んだ","豊かさを人と分かち合った","趣味・娯楽で英気を養った","恋愛・人間関係を大切にした","歯・口元の手入れをした","不平不満を吉言に変換した","商いの信用を守った","沢のように人を潤した","キャッシュを健全に保った","祝い事を丁寧に祝った","甘えるべき所で素直に甘えた","弁舌に責任を持った","言葉の創生力を善用した"],
+  8: ["山のように動じなかった","変わり目を恐れず組み替えた","継ぐべきものを受け継いだ","貯蓄・蓄積を怠らなかった","高い所から全体を見渡した","止まるべき所で止まった","家族・親族を大切にした","後継者・若手を育てた","不動産・住まいを整えた","慾を止め足るを知った","改革の一手を静かに打った","背中・腰・関節を労った","石垣を積むように信を重ねた","相続すべき知恵を記録した","朝の静けさで計画を練った","終わりと始まりを結んだ","イノベーションの種を仕込んだ","頑固を柔らかに緩めた","山の頂の視座で判断した","不動心で誘惑を退けた"],
+  9: ["感性を磨く美に触れた","熱意をもって取り組んだ","物事の本質を見抜いた","名誉より実を選んだ","知的な学び・読書をした","礼節・作法を正した","美しく装い場を照らした","隠れた真実を明らかにした","芸術・文化に親しんだ","先見の明で先を読んだ","華やかさに驕らなかった","目・頭脳を休めた","情熱の火を絶やさなかった","公の場で堂々と表明した","別れるべき縁を見極めた","火の始末・契約書を確かめた","直観の閃きを書き留めた","人の長所を照らし讃えた","南面して大局を観た","感性と熱意で人生を高めた"]
+};
+
+/* ---------- 九性命式 ---------- */
+var SEI_NAME = { 1: "一白水性", 2: "二黒土性", 3: "三碧木性", 4: "四緑木性", 5: "五黄土性", 6: "六白金性", 7: "七赤金性", 8: "八白土性", 9: "九紫火性" };
+var SEI_INFO = {
+  1: { kei: "坎為水", meidai: "柔軟な心と誠実な生き方", kw: "智・流動・浸透・誠実", tokucho: "水の性。低きに流れて万物を潤し、形を変えながら本質を失わない。苦労を智慧に変える浸透力と、秘めた誠実さが身上。" },
+  2: { kei: "坤為地", meidai: "上徳如谷、無償の愛と堅実", kw: "育成・堅実・受容・勤勉", tokucho: "大地の性。すべてを受け容れて育む無償の愛と、コツコツ積み上げる堅実さ。谷のような低さこそ最上の徳とする。" },
+  3: { kei: "震為雷", meidai: "勇気とヒラメキ", kw: "発動・音・若さ・決断", tokucho: "雷の性。ヒラメキと勇気で真っ先に動き、停滞を打ち破る。若々しい発展のエネルギーと正直さが身上。" },
+  4: { kei: "巽為風", meidai: "信用と奉仕の精神", kw: "信用・縁・交流・調和", tokucho: "風の性。広く行き渡って縁を結び、信用と奉仕で世を調える。柔らかな物腰の奥に、確かな芯を持つ。" },
+  5: { kei: "戊・己", meidai: "成功と忍耐力", kw: "中心・帝王・破壊と再生・忍耐", tokucho: "中央の土性。万物を裁く帝王の気を持ち、破壊と再生を司る。土壇場の忍耐力と、中心に立つ責任感が身上。" },
+  6: { kei: "乾為天", meidai: "創造力とリーダーシップ", kw: "天・創造・統率・完全", tokucho: "天の性。創造力とリーダーシップで人々を導く。高い理想と公明正大さ、動きて休まぬ精進が身上。" },
+  7: { kei: "兌為澤", meidai: "言葉の創生力と豊かさ", kw: "悦び・言葉・実り・社交", tokucho: "沢の性。言葉の創生力で人を悦ばせ、実りと豊かさを分かち合う。愛嬌と社交の才、収穫を締める算勘が身上。" },
+  8: { kei: "艮為山", meidai: "イノベーションと不動心", kw: "不動・変革・相続・蓄積", tokucho: "山の性。動じない心で変わり目を司り、終わりと始まりを結ぶ。受け継ぎ、蓄え、静かに組み替える変革者。" },
+  9: { kei: "離為火", meidai: "感性と熱意での人生の向上", kw: "感性・熱意・明知・名誉", tokucho: "火の性。感性と熱意で物事を照らし、本質を見抜く明知を持つ。美と知性、公に立つ華が身上。" }
+};
+
+/* ---------- 十二支の字義 ---------- */
+var SHI = {
+  "子": { ji: "孳", sei: 1, kan: "壬", imi: "孳(ふえる)——種子の中で新しい生命が萌しはじめる" },
+  "丑": { ji: "紐", sei: 2, kan: "己", imi: "紐(むすぶ)——芽が殻を結んで出番を待つ" },
+  "寅": { ji: "蠢", sei: 3, kan: "甲", imi: "蠢(うごめく)——生命が地中で蠢き動きはじめる" },
+  "卯": { ji: "冒", sei: 4, kan: "乙", imi: "冒(おかす)——地表を冒して芽が顔を出す" },
+  "辰": { ji: "震", sei: 8, kan: "戊", imi: "震(ふるう)——生命が奮い立ち形を整える" },
+  "巳": { ji: "已", sei: 9, kan: "丁", imi: "已(やむ)——成長が極まり陽気が満ちる" },
+  "午": { ji: "忤", sei: 9, kan: "丙", imi: "忤(さからう)——陽極まりて陰が兆しはじめる" },
+  "未": { ji: "味", sei: 2, kan: "己", imi: "味(あじわう)——果実が熟して味を成す" },
+  "申": { ji: "伸", sei: 6, kan: "庚", imi: "伸(のびる)——実が引き締まり伸びきる" },
+  "酉": { ji: "醸", sei: 7, kan: "辛", imi: "醸(かもす)——実りを収めて酒を醸す" },
+  "戌": { ji: "戉", sei: 8, kan: "戊", imi: "戉(まさかり)——草木を刈り収めて蔵に納める" },
+  "亥": { ji: "核", sei: 1, kan: "癸", imi: "核(たね)——生命が核に還り次の種となる" }
+};
+var SHI_ORDER = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+var GOU = [["子","丑"],["寅","亥"],["卯","戌"],["辰","酉"],["巳","申"],["午","未"]];
+function shiRel(a, b) { // 年支×日支の縁
+  if (a === b) return { rel: "同支", note: "年の支と同じ支の日。原点を確かめる縁日。" };
+  for (var i = 0; i < GOU.length; i++) {
+    if ((GOU[i][0] === a && GOU[i][1] === b) || (GOU[i][0] === b && GOU[i][1] === a))
+      return { rel: "支合", note: "年支と結び合う日。縁がまとまりやすい。" };
+  }
+  var ia = SHI_ORDER.indexOf(a), ib = SHI_ORDER.indexOf(b);
+  if ((ia + 6) % 12 === ib) return { rel: "支冲", note: "年支と向かい合う日。予定の変動に備え、丁寧さを増す。" };
+  return null;
+}
+function kokuOf(hour) { // 現在時刻→刻(支)
+  var idx = Math.floor(((hour + 1) % 24) / 2);
+  return SHI_ORDER[idx];
+}
+
+/* ---------- 宿曜二十七宿(補完体系・ガイアコード原典外) ---------- */
+var SHUKU = ["昴","畢","觜","参","井","鬼","柳","星","張","翼","軫","角","亢","氐","房","心","尾","箕","斗","女","虚","危","室","壁","奎","婁","胃"];
+var SHUKU_M1 = { 1: 22, 2: 24, 3: 26, 4: 1, 5: 3, 6: 5, 7: 8, 8: 11, 9: 13, 10: 15, 11: 18, 12: 20 }; // 各月朔の宿index(閏月は本月に同じ)
+function shukuOf(kyu) { // kyureki結果→日の宿index
+  if (!kyu || !kyu.month) return -1;
+  var base = SHUKU_M1[kyu.month];
+  return (base + kyu.day - 1) % 27;
+}
+/* 三九の秘法: 本命宿から日宿への距離→縁 */
+var SANKU_SEQ = ["命","栄","衰","安","危","成","壊","友","親"];
+function sanku(natalIdx, dayIdx) {
+  if (natalIdx < 0 || dayIdx < 0) return null;
+  var k = ((dayIdx - natalIdx) % 27 + 27) % 27;
+  var pos = k % 9, cycle = Math.floor(k / 9); // 0=初巡,1=二巡,2=三巡
+  var name = SANKU_SEQ[pos];
+  if (pos === 0 && cycle === 1) name = "業";
+  if (pos === 0 && cycle === 2) name = "胎";
+  return { name: name, cycle: cycle + 1 };
+}
+var SANKU_INFO = {
+  "命": { cls: "chu", label: "注", desc: "本命の宿が巡る日。自分の原点に還り、心身を整える。" },
+  "栄": { cls: "kichi", label: "吉", desc: "栄えの縁。物事が発展しやすく、始めごとに良い。" },
+  "衰": { cls: "chu", label: "注", desc: "気が衰えやすい日。無理をせず守りを固める。" },
+  "安": { cls: "kichi", label: "吉", desc: "安定の縁。継続・維持・和合に向く穏やかな日。" },
+  "危": { cls: "chu", label: "注", desc: "危うさが差す日。慎重に、確認をひとつ増やす。" },
+  "成": { cls: "kichi", label: "吉", desc: "成就の縁。まとめごと・仕上げが実りやすい。" },
+  "壊": { cls: "kai", label: "戒", desc: "壊れの縁。大事な契約・決断は避け、整理に徹する。" },
+  "友": { cls: "kichi", label: "吉", desc: "友の縁。交流・協力・人との結びに良い日。" },
+  "親": { cls: "kichi", label: "吉", desc: "親しみの縁。身内・恩人との絆を深めるに良い。" },
+  "業": { cls: "chu", label: "注", desc: "過去の業(カルマ)が表れる日。積み残しを片付ける。" },
+  "胎": { cls: "chu", label: "注", desc: "未来の胎(たね)が宿る日。構想・仕込みに向く。" }
+};
+/* 二十七宿の個別性格(補完体系・一行紹介) */
+var SHUKU_INFO = {
+  "昴": "気品と聡明さの宿。名誉を重んじ、上に立って輝く。",
+  "畢": "実直と蓄財の宿。粘り強く、豊かさを着実に築く。",
+  "觜": "弁舌と探究の宿。鋭い観察眼で本質を突く。",
+  "参": "行動と開拓の宿。度胸と行動力で道を切り拓く。",
+  "井": "理知と潔癖の宿。筋を通し、学問・技芸に秀でる。",
+  "鬼": "感受と霊妙の宿。直感が鋭く、人の心を映す。",
+  "柳": "情熱と美意識の宿。愛憎深く、芸の道に光る。",
+  "星": "独立と気骨の宿。孤高を恐れず、我が道を行く。",
+  "張": "華やぎと社交の宿。人前に立ち、場を盛り上げる。",
+  "翼": "誠実と奉仕の宿。翼を広げ、遠くの人にも尽くす。",
+  "軫": "着実と商才の宿。静かに実利を積み、締めくくる。",
+  "角": "明朗と進取の宿。若々しく、新しい流行を担う。",
+  "亢": "気位と正義の宿。曲がったことを嫌い、筋を貫く。",
+  "氐": "堅実と大器の宿。晩成型。土台を固めて大きく成る。",
+  "房": "福徳と品格の宿。生まれながらの徳で人を惹きつける。",
+  "心": "人望と機知の宿。人の心を掴み、中心に据えられる。",
+  "尾": "剛毅と一徹の宿。決めた道を最後までやり抜く。",
+  "箕": "豪放と自由の宿。細事に拘らず、大きく構える。",
+  "斗": "統率と大望の宿。器が大きく、人の上に立つ。",
+  "女": "勤勉と忍耐の宿。コツコツと努め、内に才を秘める。",
+  "虚": "感性と夢想の宿。豊かな想像力で独自の世界を築く。",
+  "危": "器用と変化の宿。多芸多才、変わり身の早さが武器。",
+  "室": "胆力と信念の宿。腹が据わり、大事を成す力を持つ。",
+  "壁": "温和と学芸の宿。守りに強く、文の道で花開く。",
+  "奎": "端正と文雅の宿。礼を重んじ、品よく事を運ぶ。",
+  "婁": "世話と調停の宿。面倒見がよく、間を取り持つ。",
+  "胃": "果敢と集中の宿。的を定めたら一気に取りにいく。"
+};
+
+/* ---------- 四柱の九性(年命・月命・日命・時命) ---------- */
+function hourStar(y, m, d, hour) { // 時家九星
+  var mode = ENG().tonMode(y, m, d);
+  var dShi = ENG().dayEto(y, m, d).charAt(1);
+  var g = SHI_ORDER.indexOf(dShi) % 3; // 0=子午卯酉? indexOf: 子0丑1寅2 → %3: 子0,午6%3=0 ✓ / 丑1辰4未7戌10→1 / 寅2巳5申8亥11→2
+  var kokuIdx = Math.floor(((hour + 1) % 24) / 2);
+  var start;
+  if (mode === 1) start = [1, 4, 7][g]; else start = [9, 6, 3][g];
+  var s = mode === 1 ? (start + kokuIdx) : (start - kokuIdx);
+  s = ((s - 1) % 9 + 9) % 9 + 1;
+  return s;
+}
+function ENG() { // engine関数群への参照(ブラウザ=グローバル/Node=require)
+  if (typeof module !== "undefined" && typeof require !== "undefined") { return require("./engine.js"); }
+  return { tonMode: tonMode, dayEto: dayEto, yearStar: yearStar, monthStar: monthStar, dayStar: dayStar, setsuMonth: setsuMonth, kyureki: kyureki, yearEto: yearEto, palaceOf: palaceOf };
+}
+
+/* ---------- 統合API ---------- */
+function natalOdo(by, bm, bd, bh) { // bh: 生時(任意, 0-23)
+  var E = ENG();
+  var sm = E.setsuMonth(by, bm, bd);
+  var honmei = E.yearStar(sm.eYear);
+  var getsumei = E.monthStar(sm.eYear, sm.mIdx);
+  var nichimei = E.dayStar(by, bm, bd);
+  var jimei = (bh === undefined || bh === null || bh === "") ? null : hourStar(by, bm, bd, +bh);
+  var kyu = E.kyureki(by, bm, bd);
+  var natalShuku = shukuOf(kyu);
+  var ye = E.yearEto(sm.eYear);
+  return {
+    honmei: honmei, getsumei: getsumei, nichimei: nichimei, jimei: jimei,
+    eYear: sm.eYear, yearShi: ye.shi, yearEtoStr: ye.str,
+    kyureki: kyu, shukuIdx: natalShuku, shuku: natalShuku >= 0 ? SHUKU[natalShuku] : "―",
+    info: SEI_INFO[honmei]
+  };
+}
+function yearOdo(eYear, n) {
+  var E = ENG();
+  var c = E.yearStar(eYear);
+  var p = E.palaceOf(c, n);
+  return { center: c, palace: p, phase: PHASE[p] };
+}
+function monthOdo(eYear, mIdx, n) {
+  var E = ENG();
+  var c = E.monthStar(eYear, mIdx);
+  var p = E.palaceOf(c, n);
+  return { center: c, palace: p, phase: PHASE[p] };
+}
+function dayOdo(y, m, d, n) {
+  var E = ENG();
+  var c = E.dayStar(y, m, d);
+  var p = E.palaceOf(c, n);
+  return { center: c, palace: p, phase: PHASE[p] };
+}
+
+/* ---------- 指針文面(期×気力×本命) = プッシュ通知コピー仕様と共通 ---------- */
+function guideText(phase, noteCount, honmei) {
+  var k = kiryoku(noteCount);
+  var lines = [];
+  lines.push(phase.guide);
+  if (phase.caution) lines.push("【要注意】" + phase.caution + "。" + (phase.caution === "慢心" ? "實るほど頭を垂れて。" : phase.caution === "過度" ? "気力のオーバーヒートに冷却を。" : "確認をひとつ増やして。"));
+  if (isJoushou(noteCount)) {
+    if (phase.kind === "衰") lines.push("あなたは今「" + k.level + "」——常勝の圏内。衰運期は内面充実の好機、恐れず深めるとき。");
+    else if (phase.kind === "合") lines.push("「" + k.level + "」の今、頂の力を統率に使えば波を乗り切れる。");
+    else lines.push("「" + k.level + "」の気力が盛運の波を最大化する。惜しみなく行ずるとき。");
+  } else if (k.rank === 2) {
+    lines.push("気力は「退気」。今日の指針より先に、二十の特性をあと" + (10 - noteCount) + "つ行じて活気圏へ。");
+  } else {
+    lines.push("気力は「滅気」。期の吉凶にかかわらず、まず一つ特性を行に。小さな一践が螺旋の入口。");
+  }
+  var sei = SEI_INFO[honmei];
+  if (sei) lines.push("〈" + SEI_NAME[honmei] + "の行〉" + sei.meidai + "を今日の所作に。");
+  return lines;
+}
+/* 通知一行文(プッシュ通知文面の生成仕様) */
+function notifyLine(phase, noteCount, honmei) {
+  var k = kiryoku(noteCount);
+  var head = phase.name + "×" + k.level;
+  if (isJoushou(noteCount) && phase.kind === "衰") return head + "|常勝圏。内面充実の好機です。" + phase.meidai + "を一行。";
+  if (!isJoushou(noteCount)) return head + "|まず特性を一つ。" + SEI_INFO[honmei].meidai + "から。";
+  return head + "|" + phase.meidai + "。今日も行じてまいりましょう。";
+}
+
+
+/* ---------- 期の心得(詳細ビュー用: よし・いましめ・ことば)【要監修・仮文】 ---------- */
+var PHASE_DETAIL = {
+  2: { yoshi: ["種を蒔く・始めごとを仕込む", "人を育てる・世話をする", "土台と足元を整える", "小さな約束を確かに果たす"],
+       imashime: ["焦って刈り取ろうとしない", "派手な勝負に出ない"],
+       kokoroe: "谷は低きがゆえに、水を集める。" },
+  3: { yoshi: ["朝一番に動き出す", "ヒラメキを口に出し形にする", "即断即決で片付ける", "新しい挑戦の一歩を踏む"],
+       imashime: ["迷いの先送りをしない", "出鼻の弱気に呑まれない"],
+       kokoroe: "雷は、轟いてからためらわない。" },
+  4: { yoshi: ["遠方との縁をつなぐ", "整える・調える・磨く", "紹介と奉仕で信を積む", "評判に恥じぬ装いをする"],
+       imashime: ["縁の出し惜しみをしない", "風向きを無視しない"],
+       kokoroe: "風は隅々まで届いて、信を運ぶ。" },
+  5: { yoshi: ["実務を完遂し形にする", "収穫を数え、分かち合う", "中心の責務を引き受ける", "礼と感謝を欠かさない"],
+       imashime: ["慢心して独り占めしない", "人の言葉を軽んじない"],
+       kokoroe: "實るほど、頭を垂れる稲穂かな。" },
+  6: { yoshi: ["大局の決断を下す", "権限を委ね人を立てる", "休息を予定に組み込む", "天に恥じぬ筋を通す"],
+       imashime: ["出力過多で燃え尽きない", "休まぬ独走をしない"],
+       kokoroe: "天は動きて休まず、されど四時に節あり。" },
+  7: { yoshi: ["収支を締め、決算する", "感謝と喜びを言葉にする", "実りを分配し祝う", "口元と笑顔を整える"],
+       imashime: ["口の禍を招かない", "気前の散財をしない"],
+       kokoroe: "沢は満ちて、まわりを潤す。" },
+  8: { yoshi: ["棚卸しと組み替えをする", "継ぐべきものを記録する", "止まる勇気を持つ", "住まい・背筋を整える"],
+       imashime: ["惰性で続けない", "変化に蓋をしない"],
+       kokoroe: "山は動かずして、四季を変える。" },
+  9: { yoshi: ["成果や学びを公開する", "美と礼を整える", "本を読み、書き留める", "人の長所を照らし讃える"],
+       imashime: ["見栄の火遊びをしない", "隠しごとを抱えない"],
+       kokoroe: "火は隠せば燻り、掲げれば照らす。" },
+  1: { yoshi: ["学び直しと充電をする", "信頼の綻びを繕う", "静かに一人の時間を持つ", "身体を温め早く休む"],
+       imashime: ["大きな決断を急がない", "夜更けに思い詰めない"],
+       kokoroe: "水は最も低きに就きて、海となる。" }
+};
+
+/* ---------- 三九の縁 ふるまい一行(詳細ビュー用) ---------- */
+var SANKU_ADVICE = {
+  "命": "自分の原点を整える日。朝の身支度と持ち物をいつもより丁寧に。",
+  "栄": "始めごと・お披露目に良し。ためらわず一歩前へ。",
+  "衰": "守りの日。約束の再確認と、早めの休息を。",
+  "安": "続けごとに良し。淡々と、いつもの所作を積む。",
+  "危": "確認をひとつ増やす日。移動と刃物は落ち着いて。",
+  "成": "仕上げ・締結に良し。今日のうちに結び切る。",
+  "壊": "大事な契約・談判は日を改め、整理と手入れに徹する。",
+  "友": "人と会い、人に頼るに良し。連絡を一本入れる。",
+  "親": "身内・恩人との時間を。礼を尽くし、恩に報いる。",
+  "業": "積み残しの返済日。後回しをひとつ片付ける。",
+  "胎": "仕込みの日。構想を書き留め、種を蒔く支度を。"
+};
+
+/* ---------- 二十四節気のことば・伝統色(和の意匠) ---------- */
+var SEKKI_MSG = {
+  "立春": "春の気立つ。まだ寒くとも、光はもう春。", "雨水": "雪は雨に、氷は水に。土が目を覚ます。",
+  "啓蟄": "土の中の虫が戸を啓く。動き出しの合図。", "春分": "昼夜ひとしく。彼岸の中日、手を合わせて。",
+  "清明": "万物清く明らか。空気の澄みわたる頃。", "穀雨": "百穀を潤す春の雨。種まきの好機。",
+  "立夏": "夏の気立つ。風薫り、緑まぶしく。", "小満": "万物しだいに満ちる。麦の穂の実る頃。",
+  "芒種": "芒ある穀を播く。梅雨の走り。", "夏至": "昼もっとも長し。陽きわまりて陰きざす。",
+  "小暑": "暑さ本番へ。梅雨明けの便りを待つ頃。", "大暑": "一年でもっとも暑い頃。土用の養生を。",
+  "立秋": "秋の気立つ。残暑の中に秋の気配。", "処暑": "暑さ処る。朝夕に涼、虫の音そろそろ。",
+  "白露": "草に白い露。夜気ひえて秋深まる。", "秋分": "昼夜ひとしく。実りに感謝する彼岸。",
+  "寒露": "露つめたく。菊咲き、雁わたる。", "霜降": "霜降りはじむ。紅葉の便り、冬支度。",
+  "立冬": "冬の気立つ。木枯らし一号の頃。", "小雪": "わずかに雪。橘の実の色づく頃。",
+  "大雪": "雪いよいよ降る。年の瀬の支度を。", "冬至": "夜もっとも長し。柚子湯で一陽来復。",
+  "小寒": "寒の入り。寒稽古・寒仕込みの頃。", "大寒": "寒さきわまる。されば春遠からじ。"
+};
+var SEKKI_COLOR = {
+  "立春": ["紅梅", "#D9737F"], "雨水": ["柳鼠", "#9DA791"], "啓蟄": ["萌黄", "#9FB856"],
+  "春分": ["桜", "#EFC3CB"], "清明": ["藤", "#A294C7"], "穀雨": ["若苗", "#9EBF6B"],
+  "立夏": ["杜若", "#5D5099"], "小満": ["若竹", "#68B68C"], "芒種": ["菖蒲", "#8F77B5"],
+  "夏至": ["露草", "#3E77C0"], "小暑": ["浅葱", "#3D9CA5"], "大暑": ["瑠璃", "#2A5CAA"],
+  "立秋": ["桔梗", "#5F4E9E"], "処暑": ["竜胆", "#8674A1"], "白露": ["白練", "#EDE7DA"],
+  "秋分": ["女郎花", "#D6BC53"], "寒露": ["柿", "#C56A32"], "霜降": ["緋", "#B13546"],
+  "立冬": ["枯茶", "#8A6E45"], "小雪": ["銀鼠", "#9FA0A0"], "大雪": ["藍鉄", "#324356"],
+  "冬至": ["柚子", "#D9B24B"], "小寒": ["白群", "#78A8BE"], "大寒": ["鈍色", "#727171"]
+};
+
+/* ---------- 今日の一践(特性の推し番) ---------- */
+function pickTokusei(jdn, honmei, checked) {
+  var base = ((jdn + honmei * 7) % 20 + 20) % 20;
+  for (var i = 0; i < 20; i++) {
+    var cand = (base + i) % 20;
+    if (!checked || checked.indexOf(cand) < 0) return cand;
+  }
+  return -1; // 全て満行
+}
+
+/* ============================================================
+ * 巡(めぐり) aisho.js — 縁(相性)レイヤー v0.4
+ * 一対一: 九性の相生相剋(一般気学準拠・補完) / 年支の支合冲(体系内) /
+ *         宿曜三九の対関係(補完体系) / 今年の位相の組み合わせ(体系内)
+ * 集団:   五行分布 / 位相マップ / 相性マトリクス
+ * 方針: 相剋を「凶」と断じない(磨き合いの縁)。衰運非凶の思想と同軸。
+ * ============================================================ */
+"use strict";
+
+/* ---------- 依存アクセサ(ブラウザ=グローバル/Node=require) ---------- */
+function _ODO() {
+  if (typeof module !== "undefined" && typeof require !== "undefined") return require("./odo.js");
+  return { sanku: sanku, shiRel: shiRel, SEI_NAME: SEI_NAME };
+}
+
+/* ---------- 九性→五行 ---------- */
+var GOGYO = { 1: "水", 2: "土", 3: "木", 4: "木", 5: "土", 6: "金", 7: "金", 8: "土", 9: "火" };
+var GEN = { "木": "火", "火": "土", "土": "金", "金": "水", "水": "木" };   // 相生
+var KOKU = { "木": "土", "土": "水", "水": "火", "火": "金", "金": "木" }; // 相剋
+
+/* 二星の関係: {type, dir, ea, eb}  dir: "ab"=a→b, "ba"=b→a */
+function seiRel(a, b) {
+  var ea = GOGYO[a], eb = GOGYO[b];
+  if (a === b) return { type: "同星", dir: null, ea: ea, eb: eb };
+  if (ea === eb) return { type: "比和", dir: null, ea: ea, eb: eb };
+  if (GEN[ea] === eb) return { type: "相生", dir: "ab", ea: ea, eb: eb };
+  if (GEN[eb] === ea) return { type: "相生", dir: "ba", ea: ea, eb: eb };
+  if (KOKU[ea] === eb) return { type: "相剋", dir: "ab", ea: ea, eb: eb };
+  return { type: "相剋", dir: "ba", ea: ea, eb: eb };
+}
+/* 表示用: 一文字記号と色クラス */
+function seiRelMark(rel) {
+  if (rel.type === "同星") return { mark: "同", cls: "r-wa" };
+  if (rel.type === "比和") return { mark: "和", cls: "r-wa" };
+  if (rel.type === "相生") return { mark: "生", cls: "r-sei" };
+  return { mark: "剋", cls: "r-koku" };
+}
+/* 説明文(nameA/nameB は表示名) */
+function seiRelText(rel, nameA, nameB) {
+  if (rel.type === "同星") return nameA + "と" + nameB + "は同じ星。鏡のように映し合う縁。分かり合いは深いが、同じ弱みも重なる——互いの盲点は外に求めて。";
+  if (rel.type === "比和") return "同じ" + rel.ea + "の気を分かつ比和の縁。気心は通じやすい。同質ゆえ、役割の描き分けをすると力が重ならず広がる。";
+  if (rel.type === "相生") {
+    var giver = rel.dir === "ab" ? nameA : nameB, taker = rel.dir === "ab" ? nameB : nameA;
+    var ge = rel.dir === "ab" ? rel.ea : rel.eb, te = rel.dir === "ab" ? rel.eb : rel.ea;
+    return ge + "が" + te + "を生かす相生の縁。" + giver + "が与え、" + taker + "が受けて伸びる流れ。与える側の消耗に、受ける側からの感謝と還元を。";
+  }
+  var winner = rel.dir === "ab" ? nameA : nameB, other = rel.dir === "ab" ? nameB : nameA;
+  var we = rel.dir === "ab" ? rel.ea : rel.eb, oe = rel.dir === "ab" ? rel.oe || rel.eb : rel.ea;
+  oe = rel.dir === "ab" ? rel.eb : rel.ea;
+  return we + "が" + oe + "を剋す磨き合いの縁。ぶつかりは互いの砥石——" + winner + "は抑え込みに気づき、" + other + "は萎縮より対話を。役割と距離感を設計すれば、むしろ強い組み合わせ。";
+}
+
+/* ---------- 宿曜三九の対関係(補完体系) ---------- */
+var PAIR_INFO = {
+  "命": { label: "命の縁", cls: "kichi", desc: "同じ宿。似た魂の共鳴。長所も短所も重なるため、互いが互いの鏡となる。" },
+  "業胎": { label: "業胎の縁", cls: "chu", desc: "過去(業)と未来(胎)で結ばれた深い因縁。理屈を超えて引き合うが、感情の借り貸しは丁寧に清算を。" },
+  "栄親": { label: "栄親の縁", cls: "kichi", desc: "繁栄(栄)と親愛(親)。引き立て合い、共に栄える最良の吉縁のひとつ。" },
+  "友衰": { label: "友衰の縁", cls: "kichi", desc: "友愛(友)と献身(衰)。気の置けない間柄。衰の側は尽くし過ぎに、友の側は甘え過ぎに気をつけて釣り合いを。" },
+  "安壊": { label: "安壊の縁", cls: "kai", desc: "安らぎ(安)と破(壊)。強く惹かれ合うぶん波も大きい縁。約束事と距離感を丁寧に設えれば学びは深い。" },
+  "危成": { label: "危成の縁", cls: "chu", desc: "刺激(危)と成就(成)。挑戦を共にする縁。安定よりも変化の中で力を発揮する組み合わせ。" }
+};
+function sankuPair(aIdx, bIdx) { // 本命宿index同士 → 対関係
+  if (aIdx < 0 || bIdx < 0) return null;
+  var O = _ODO();
+  var ab = O.sanku(aIdx, bIdx); // aから見たb
+  var ba = O.sanku(bIdx, aIdx);
+  var key;
+  var set = [ab.name, ba.name].sort().join("");
+  if (ab.name === "命") key = "命";
+  else if (set === "業胎".split("").sort().join("")) key = "業胎";
+  else if (set === "栄親".split("").sort().join("")) key = "栄親";
+  else if (set === "友衰".split("").sort().join("")) key = "友衰";
+  else if (set === "壊安".split("").sort().join("") || set === "安壊".split("").sort().join("")) key = "安壊";
+  else key = "危成";
+  return { ab: ab.name, ba: ba.name, key: key, info: PAIR_INFO[key] };
+}
+
+/* ---------- 年支の縁(体系内: 支合・支冲・同支) ---------- */
+function shiPair(shiA, shiB) {
+  var O = _ODO();
+  var r = O.shiRel(shiA, shiB);
+  if (!r) return null;
+  if (r.rel === "支合") return { rel: "支合", note: "年支同士が結び合う。縁がまとまりやすく、組めば形になる。" };
+  if (r.rel === "支冲") return { rel: "支冲", note: "年支同士が向かい合う。刺激が強いぶん、段取りと確認を一つ増やすとよく回る。" };
+  return { rel: "同支", note: "同じ年支。歩幅が揃いやすい。" };
+}
+
+/* ---------- 今年の位相の組み合わせ(体系内: バイオリズム) ---------- */
+function phasePairText(pa, pb, nameA, nameB) {
+  var ka = pa.kind, kb = pb.kind;
+  if (ka === "合" && kb === "合") return "共に盛衰合期——波の頂が重なる年回り。互いが互いの冷却役を務める設えを。";
+  if (ka === "合" || kb === "合") {
+    var top = ka === "合" ? nameA : nameB, coolside = ka === "合" ? nameB : nameA;
+    return top + "は波の頂(盛衰合期)。過度に注意が要る年回りゆえ、" + coolside + "が手綱と冷却の役を。";
+  }
+  if (ka === "盛" && kb === "盛") return "共に盛運——外へ打って出る協働の年回り。攻めの計画を共有し、二人の推進力を束ねるとき。";
+  if (ka === "衰" && kb === "衰") return "共に衰運——内実を磨く年回り。仕込み・学び・体制づくりを共にすれば、次の盛運で大きく実る。";
+  var seiName = ka === "盛" ? nameA : nameB, suiName = ka === "盛" ? nameB : nameA;
+  return seiName + "が外(推進・公開)を、" + suiName + "が内(充実・仕込み)を——役割分担が噛み合う年回り。";
+}
+
+/* ---------- 集団分析 ---------- */
+var ELEM_ORDER = ["木", "火", "土", "金", "水"];
+var ELEM_ROLE = { "木": "伸ばす・始める", "火": "照らす・魅せる", "土": "受ける・育てる", "金": "締める・仕上げる", "水": "潤す・つなぐ" };
+function elemDist(stars) { // 本命配列→五行分布
+  var c = { "木": 0, "火": 0, "土": 0, "金": 0, "水": 0 };
+  for (var i = 0; i < stars.length; i++) c[GOGYO[stars[i]]]++;
+  var missing = [], most = null;
+  for (var j = 0; j < ELEM_ORDER.length; j++) {
+    var e = ELEM_ORDER[j];
+    if (c[e] === 0) missing.push(e);
+    if (most === null || c[e] > c[most]) most = e;
+  }
+  return { counts: c, missing: missing, most: most };
+}
+function groupPhase(members) { // [{name, phase}] → 盛/合/衰に区分
+  var g = { sei: [], gou: [], sui: [] };
+  for (var i = 0; i < members.length; i++) {
+    var m = members[i];
+    if (m.phase.kind === "盛") g.sei.push(m);
+    else if (m.phase.kind === "合") g.gou.push(m);
+    else g.sui.push(m);
+  }
+  return g;
+}
+function groupPhaseText(g) {
+  var parts = [];
+  if (g.sei.length) parts.push("盛運" + g.sei.length + "名が外向きの推進(創造の磁気)を");
+  if (g.sui.length) parts.push("衰運" + g.sui.length + "名が内実の充実(仕込み・体制)を");
+  var s = parts.length ? parts.join("、") + "担う年回り。" : "";
+  if (g.gou.length) s += "盛衰合期の" + g.gou.length + "名は波の頂——過度に注意し、周囲が冷却役を。";
+  if (!s) s = "位相を読み込めませんでした。";
+  return s;
+}
+function elemDistText(d, n) {
+  var s = "";
+  if (d.missing.length) {
+    var roles = d.missing.map(function (e) { return e + "(" + ELEM_ROLE[e] + ")"; }).join("・");
+    s += "欠けの気: " + roles + " — この役回りは仕組みや外の縁で補うと安定します。";
+  } else {
+    s += "五行が一巡り揃っています。役回りの循環(相生の順)を意識すると力が回ります。";
+  }
+  if (n >= 3 && d.counts[d.most] >= Math.ceil(n * 0.5)) s += " " + d.most + "の気が厚め(" + d.counts[d.most] + "名)——同質の強みと偏りの両面を。";
+  return s;
+}
+
+/* ============================================================
+ * 巡(めぐり) lessons.js — 王道學 三分の講 v0.6
+ * 巻: 入門四講 / 期の九講 / ことわり三講 = 全十六講
+ * 各講 三〜五段+行の一問。誦読およそ三分(五百〜八百字)。
+ * ※本文はすべて原典・講義要旨の仮要約【要監修】。
+ * audioUrl: 将来の音声講用(監修済み音声URLを入れると再生UIが自動表示)
+ * ============================================================ */
+"use strict";
+
+var LESSONS = [
+/* ── 巻一 入門 ── */
+{ id: "nyu1", maki: "入門", no: 1, title: "王道學とは——占いにあらず", min: 3, palace: 0, audioUrl: null,
+  steps: [
+    { t: "問いから", b: "暦を開くとき、人はつい「今日は良い日か、悪い日か」と問いたくなる。世の多くの暦占いは、その問いに丸や三角で答えてくれる。だが王道學の暦は、その問いには答えない。答えるのは、まったく別の問い——「今日、何を行ずるか」である。良し悪しを外に尋ねる暦と、行いを内に問う暦。同じ暦の顔をして、この二つは根本が違う。" },
+    { t: "地図として", b: "九性氣學における暦とは、吉凶の託宣ではなく、気の満ち引きを描いた地図である。地図は旅の良し悪しを決めない。山があると教え、川があると教え、どの道をどう歩くかは旅人に委ねる。今日が盛運の追い風なら帆を張ればよいし、衰運の向かい風なら錨を下ろして船を繕えばよい。風を選ぶことはできないが、帆と舵はいつでもこちらの手にある。" },
+    { t: "自己統治", b: "ゆえに王道學は「自己統治の学」と呼ばれる。運に統べられて一喜一憂するのではなく、運の波を知った上で、おのれの行いでおのれを統べる。渋沢栄一の説いた道徳経済も、鮎川義介の説いた事業の道も、根はここに通じている——外の波を言い訳にせず、内の行いを整えた者だけが、千年つづくものを遺す。その要となる仕組みが、次講で学ぶ「螺旋の構造」である。" }
+  ],
+  q: "今日のあなたは、暦に「吉凶」を問うていたか、それとも「行い」を問うていたか。" },
+
+{ id: "nyu2", maki: "入門", no: 2, title: "盛運と衰運——衰運は凶にあらず", min: 3, palace: 0, audioUrl: null,
+  steps: [
+    { t: "二つの磁気", b: "人の九年には、盛運と衰運の波が交互に訪れる。王道學はこの二つを吉凶では呼ばない。盛運とは「社会を発展させる創造的な磁気の波動」、衰運とは「人の内面を充実させる磁気の波動」——性質の異なる、どちらも生命に欠かせない二種類の追い風である。外へ広げる力と、内を深める力。車の両輪のように、どちらが欠けても人は遠くまで行けない。" },
+    { t: "冬は凶か", b: "衰運を凶と呼ぶのは、冬を凶と呼ぶに等しい。冬の畑に花はないが、土の中では種が力を蓄え、根は静かに深く伸びている。春に芽吹くものの大きさは、冬の蓄えで決まる。同じように、衰運期の学び・仕込み・人との信頼の補修が、次の盛運期の実りの大きさを決める。衰運の九年を「悪い時期」と怯えて縮こまった者と、「深める時期」と定めて内を耕した者とでは、次の春にまるで違う景色が待っている。" },
+    { t: "波に合わせる", b: "だから極意は単純である——盛運には外へ、衰運には内へ。波に逆らって漕げば力は倍要って半分しか進まず、波に合わせて漕げば半分の力で倍進む。期を知るとは、頑張りどころを知ることではなく、力の「使いどころ」を知ることである。今日のあなたの帆は、風と同じ向きを向いているか。" }
+  ],
+  q: "いまのあなたの期は外向きか、内向きか。今日の予定は、その向きに合っているか。" },
+
+{ id: "nyu3", maki: "入門", no: 3, title: "気力の五段——生気は常勝する", min: 3, palace: 0, audioUrl: null,
+  steps: [
+    { t: "五つの段", b: "気力には五つの段がある。十八以上の行いに満ちた「元気」、十四からの「生気」、十からの「活気」——ここまでが満ちた気。九以下に落ちれば「退気」、五を切れば「滅気」である。大切なのは、この段を決めるものが生まれつきの運でも星でもなく、ただ「今日いくつ行じたか」という行いの数だ、ということである。気力とは天から降るものではなく、日々の所作で汲み上げるものなのだ。" },
+    { t: "螺旋の核", b: "ここに王道學の心臓部、螺旋構造がある——二十の特性のうち十以上を実践する生気の人は、盛運・衰運の別なく常に勝つ。逆に、行いが五に満たぬ滅気の人は、たとえ盛運の絶頂にあっても栄えることがない。つまりこの学問では、運の波よりも気力の段のほうが上位に置かれている。波は九年をかけて巡るが、段は今日の夕方までに変えられる。これほど希望のある序列があるだろうか。" },
+    { t: "運より行", b: "「運が悪いから」と言う人は、実は順序を逆さに見ている。行いが減るから気が涸れ、気が涸れるから波に呑まれるのである。そして滅気の放置は、やがて病へ堕ちるとされる。だからこそ、どんな日も処方は同じ——まず一つ、行ずること。たった一つの行が、螺旋を昇る最初の段になる。" }
+  ],
+  q: "今日のあなたの行いは、いくつか。あと一つ足すなら、二十の特性のどれか。" },
+
+{ id: "nyu4", maki: "入門", no: 4, title: "幸せノート——二十の特性を行ずる", min: 3, palace: 0, audioUrl: null,
+  steps: [
+    { t: "性ごとの二十", b: "九つの性には、それぞれ磨くべき二十の特性がある。水性の人なら柔軟と誠実、土性の人なら受容と堅実、火性の人なら感性と熱意——おのれの性に生まれつき備わった徳の芽を、日々の所作に落とし込むための一覧である。他人の徳目を借りるのではなく、おのれの性の徳を磨く。だから同じ「二十」でも、人によって中身が違う。" },
+    { t: "チェックの意味", b: "幸せノートは「できたかどうかの採点表」ではない。「今日、どれを行じたか」の記録である。試験ではないから、零点の日があっても構わない。一つ印をつけるたびに気力の段がひとつ満ち、十で活気、十四で生気、十八で元気に至る。印をつける指先の小さな動きが、そのまま螺旋を昇る足の運びになっている——この仕組みの巧みさこそ、幸せノートの神髄である。" },
+    { t: "続ける工夫", b: "毎日二十すべてを行ずる必要はない。むしろ最初は、まず一つを確かに。行は小さくとも、続いた行だけが螺旋を昇る。おすすめは夜、床に就く前の一分——今日を振り返り、行じたものに印をつけ、明日の一つを決めて眠る。眠りの前の一分が、翌朝の最初の一歩を軽くする。千日つづけば、それはもう性根である。" }
+  ],
+  q: "二十の特性のうち、あなたがいちばん忘れがちな一つはどれか。今夜、印をつけられるか。" },
+
+/* ── 巻二 期の九講(回座宮ごと) ── */
+{ id: "ki_kon", maki: "期", no: 5, title: "第一盛運期——坤・上徳如谷", min: 3, palace: 2, audioUrl: null,
+  steps: [
+    { t: "定位のはなし", b: "坤は大地。すべてを受け容れ、すべてを育てる母なる宮である。九年の春はここから始まる。とはいえ芽はまだ土の下——外から見れば、何も起きていないように見える一年である。だが大地の下では、確かに新しい九年の物語が根を張りはじめている。" },
+    { t: "この期に起きること", b: "新しい縁が、種のように風に乗って舞い込む。小さな頼まれごと、地味な学び、目立たぬ役回り。どれも一見つまらなく見えるが、九年後に振り返れば「あれが始まりだった」と分かるものばかりである。後の九年を支える土台は、みなこの期に耕される。派手さを求める心が、いちばんの邪魔になる。" },
+    { t: "行ずべきこと", b: "種を蒔くこと。人を育てること。小さな約束を確かに果たすこと。そして谷のように低く構えること——上徳は谷の如し。谷は低いがゆえに、四方の水を集めて豊かになる。頭を下げた分だけ、縁と信が流れ込む一年である。" },
+    { t: "むすび", b: "戒めはただ一つ、焦って刈り取ろうとせぬこと。春一番の畑に実りを求めれば、土を痛め、せっかくの種を掘り返すことになる。今年の答え合わせは、九年かけてやればよい。" }
+  ],
+  q: "いま蒔いている「種」を、一つ挙げられるか。それは九年育てる価値のある種か。" },
+
+{ id: "ki_shin", maki: "期", no: 6, title: "第二盛運期——震・勇気とヒラメキ", min: 3, palace: 3, audioUrl: null,
+  steps: [
+    { t: "定位のはなし", b: "震は雷。春の空に轟き、土の下で眠っていたものを叩き起こす発動の宮である。前年に蓄えた気が、いよいよ音となり、声となって外へ出はじめる。身体の奥がむずむずと動きたがる——それがこの期の合図である。" },
+    { t: "この期に起きること", b: "ヒラメキが増える。ふとした思いつきが妙に冴え、口に出せば人が動き、動けば道が開ける。停滞していた案件が、朝の一本の電話で転がり出すような一年。ただし雷は一瞬——閃いた稲妻を、その日のうちに形にしなければ、音だけ残して消えてしまう。" },
+    { t: "行ずべきこと", b: "朝一番に動くこと。思いつきを恐れず口に出し、その日のうちに一歩目を踏むこと。完璧な計画より、粗くても早い一歩。雷は轟いてからためらわない。決めて動き、動きながら直す——それがこの期の作法である。" },
+    { t: "むすび", b: "敵は迷いの先送り、ただそれだけである。「もう少し考えてから」の一言が、この期のいちばんの毒。考えは、歩きながらでもできる。" }
+  ],
+  q: "先送りにしている「一歩目」は何か。それは今日、踏めるか。" },
+
+{ id: "ki_son", maki: "期", no: 7, title: "第三盛運期——巽・信用と奉仕", min: 3, palace: 4, audioUrl: null,
+  steps: [
+    { t: "定位のはなし", b: "巽は風。垣根を越え、国境を越え、隅々まで行き渡って遠くの香りを運ぶ宮である。九年に一度の幸運期と呼ばれるのは、金運の年だからではない——縁の風がもっとも強く吹く年だからである。風に乗るものは遠くへ届き、風に乗らぬものは足元に落ちる。" },
+    { t: "この期に起きること", b: "遠方との縁、思いがけぬ紹介、人からの引き合わせが続く。そして評判が独り歩きをはじめる。丁寧に整えてきたものは「信用」という名で広がり、乱れたままのものは「風評」という名で広がる。風は善悪を選ばず、あるがままを運ぶ——だからこの期は、身辺を整えた者だけが追い風を受けられる。" },
+    { t: "行ずべきこと", b: "縁を出し惜しみせぬこと。人と人を結び、便りを送り、頼まれれば一肌脱ぐこと。奉仕とは損ではない、風に種を乗せる行為である。撒いた恩は風に乗って巡り、忘れた頃に何倍にもなって戻る。信用第一の商い、それがこの期の王道である。" },
+    { t: "むすび", b: "追い風の年こそ、風向きを読み違えぬこと。信用は積むに十年、失うに一日。舞い上がった凧ほど、糸の手入れを怠ってはならない。" }
+  ],
+  q: "今日、誰と誰を結べるか。しばらく便りをしていない恩人は、誰か。" },
+
+{ id: "ki_chu", maki: "期", no: 8, title: "第四盛運期——中宮・成功と忍耐", min: 3, palace: 5, audioUrl: null,
+  steps: [
+    { t: "定位のはなし", b: "中宮は盤のまんなか、八方すべてから見られる座である。九年の夏、これまでの努力がようやく形になり、成果が人の目に触れる。日の当たる場所は暖かい——そして、影も濃い。中心に立つとはそういうことである。" },
+    { t: "この期に起きること", b: "実りと注目が同時にやって来る。頼られ、任され、予定が埋まり、名が知られる。同時に、中心に立つ者だけが知る孤独と、慢心という名の甘い誘惑もやって来る。称賛の声が大きくなるほど、耳の痛い言葉は聞こえにくくなる——成功の絶頂は、転落の入口と同じ場所にある。" },
+    { t: "行ずべきこと", b: "実務を最後まで完遂すること。収穫を数え、独り占めせずに分かち合うこと。そして、實るほど頭を垂れる稲穂であること。謙虚とは弱さではない。成功を一時の花火で終わらせず、本物の土台に変えるための、もっとも強靭な忍耐である。" },
+    { t: "むすび", b: "慢心は中宮の病。人の言葉を軽んじた日から、実りは静かに腐りはじめる。頂点で帽子を脱げる者だけが、次の頂点にも招かれる。" }
+  ],
+  q: "最近受け取った「耳の痛い言葉」を、一つ思い出せるか。それに礼を言ったか。" },
+
+{ id: "ki_ken", maki: "期", no: 9, title: "盛衰合期——乾・波の頂にて", min: 3, palace: 6, audioUrl: null,
+  steps: [
+    { t: "定位のはなし", b: "乾は天。創造力とリーダーシップが極まる、九年の波のいちばん高いところである。盛の力と衰の兆しが同居するゆえに「盛衰合期」と呼ぶ。登り切った峠からは、来た道と行く道の両方が見える——この期にしか見えない景色がある。" },
+    { t: "この期に起きること", b: "力は最大、視界は最高。決断は冴え、人はあなたの号令を待つ。だが頂の空気は薄い。気力はオーバーヒートしやすく、休まぬ独走が、気づかぬうちに身体と組織を焦がしていく。頂で燃え尽きた者を、王道學は数多く見てきた——だからこそ、この期にだけ「過度」という戒めが付く。" },
+    { t: "行ずべきこと", b: "大局の決断を下すこと。そして自分で全部やらぬこと——権限を委ね、人を立て、次代を前へ押し出すこと。さらに休息を根性ではなく「予定」として先に組み込むこと。天は動きて休まず、されど四時に節あり。天でさえ季節という休符を打つのである。" },
+    { t: "むすび", b: "頂で為すべきは、さらに登ることではない。次の九年の景色を、誰よりも遠くまで見ておくことである。下りの支度ができている者だけが、次の山にも登れる。" }
+  ],
+  q: "今週の予定表に「休む」という文字は書いてあるか。書いていないなら、いつ書くか。" },
+
+{ id: "ki_da", maki: "期", no: 10, title: "第二衰運期——兌・九年の決算", min: 3, palace: 7, audioUrl: null,
+  steps: [
+    { t: "定位のはなし", b: "兌は沢。水を湛えて悦び、まわりの生きものを潤す宮である。九年に一度の決算期——秋の取り入れどきに当たる。ここから波は内向きに転じるが、恐れることはない。まずは、実ったものを刈り入れる悦びの一年である。" },
+    { t: "この期に起きること", b: "これまでの九年の収支が、形になって返ってくる。良い種を蒔いた畑からは実りが、蒔き損ねた畑からは不足が、それぞれ正直に届く。またこの期は「言葉」が力を持つ——感謝の一言が縁を太らせ、不平の一言が縁を細らせる。口から出るものが、そのまま来期の種になる。" },
+    { t: "行ずべきこと", b: "収支を締めること。数字だけでなく、恩と縁の貸し借りも締めること。世話になった人に感謝を口にし、実りを分かち合い、祝うべきことは丁寧に祝う。そして忘れてならぬのは、次の九年の種銭を残すこと——実りを食べ尽くす秋に、翌年の春はない。" },
+    { t: "むすび", b: "口は悦びの門にも、禍の門にもなる。悦びを語るその口で、不平を語らぬこと。決算の年の言葉は、ぜんぶ帳簿に残ると思うがよい。" }
+  ],
+  q: "この九年で実ったものを三つ、声に出して言えるか。誰に感謝を伝えるか。" },
+
+{ id: "ki_gon", maki: "期", no: 11, title: "第三衰運期——艮・変わり目の山", min: 3, palace: 8, audioUrl: null,
+  steps: [
+    { t: "定位のはなし", b: "艮は山。終わりと始まりをひとつに結ぶ「変わり目」の宮である。山そのものは動かない。動かないまま、山の中では紅葉が散り、雪が積もり、季節だけが静かに入れ替わっていく——外は不動、内は変革。それがこの期の姿である。" },
+    { t: "この期に起きること", b: "長く続けてきたことに、組み替えの必要がふと見えてくる。人にも事業にも「継ぐべきもの」と「役目を終えたもの」の仕分けが迫られる。居心地の良い惰性と、薄々気づいている違和感——その間で心が揺れる一年である。揺れること自体が、変わり目に立っている証拠である。" },
+    { t: "行ずべきこと", b: "棚卸しをすること。何を持っていて、何が要らないかを紙に書き出すこと。継ぐべき知恵は記録し、若い手に渡す支度をすること。そして「止まる勇気」を持つこと。イノベーションとは騒ぐことではない——山のように静かに、しかし根本から組み替えることである。" },
+    { t: "むすび", b: "いちばんの敵は「ずっとこうしてきたから」の一言。その一言を、一度だけ疑ってみる。山は動かずして四季を変える——あなたも、居場所を変えずに中身を変えられる。" }
+  ],
+  q: "「継ぐもの」と「手放すもの」、一つずつ挙げられるか。手放す期限はいつか。" },
+
+{ id: "ki_ri", maki: "期", no: 12, title: "第四衰運期——離・浮上と公開", min: 3, palace: 9, audioUrl: null,
+  steps: [
+    { t: "定位のはなし", b: "離は火。冬の入口の暗がりにあって、なお内なる火が外に現れる「浮上効果」の宮である。灯りは、暗いところでこそ遠くまで見える。衰運の中にぽっと灯るこの期は、隠れていたものが照らし出される、不思議な一年である。" },
+    { t: "この期に起きること", b: "長く隠れていた努力に、思いがけず光が当たる。埋もれていた実績が発掘され、名が明らかになる。ただし火は公平である——磨いてきたものと同じ明るさで、隠してきた綻びも照らし出す。良いものも悪いものも「公開」される年だと心得ておくこと。" },
+    { t: "行ずべきこと", b: "成果と学びを、自分から公開すること。発表し、書き、名乗り出ること。美と礼を整え、装いを正すこと。そして人の長所を照らし讃えること——他人を照らす火は、めぐりめぐって自分の顔をいちばん明るく照らす。" },
+    { t: "むすび", b: "慎むべきは見栄の火遊び。照らすための火を、大きく見せるために使えば、燃え移って身を焦がす。火の始末と契約の判は、いつもより一呼吸おいて確かめること。" }
+  ],
+  q: "まだ公開していない学びや成果が、机の引き出しに眠っていないか。" },
+
+{ id: "ki_kan", maki: "期", no: 13, title: "第五衰運期——坎・九年の最深部", min: 3, palace: 1, audioUrl: null,
+  steps: [
+    { t: "定位のはなし", b: "坎は水。九年の波のいちばん深いところ、真冬の宮である。水は争わず、最も低きに就く——そして低きに就いた水だけが、やがて大河となり海となる。人生の冬を、王道學は「沈む年」ではなく「深まる年」と読む。" },
+    { t: "この期に起きること", b: "動きが鈍り、判断がいつもより曇りやすい。誘いは減り、独りの時間が増える。心細く感じるかもしれないが、水面下では次の九年を生きる智慧が静かに醸されている。孤独は罰ではない、充電である。この期の静けさを味わえた人は、来る春に慌てない。" },
+    { t: "行ずべきこと", b: "学び直すこと。ほつれた信頼を一本ずつ繕うこと。身体を温め、早く休むこと。そして大きな決断を急がぬこと——判断ミスに注意と伝えられるのはこの期である。流れの中では水は濁って見える。淀みが澄むまで、観て待つのも行のうちである。" },
+    { t: "むすび", b: "夜更けに思い詰めぬこと。冬の底で下した結論は、春の光でもう一度見直してよい。急がず、腐らず、深く潜る——浮かぶ力は、潜った深さに比例する。" }
+  ],
+  q: "いま「急いで決めようとしていること」はないか。それは春まで待てるか。" },
+
+/* ── 巻三 ことわり ── */
+{ id: "koto1", maki: "ことわり", no: 14, title: "十二支の字義——子は孳、亥は核", min: 3, palace: 0, audioUrl: null,
+  steps: [
+    { t: "動物にあらず", b: "十二支は、本来は動物の名ではない。ねずみも虎も、後の世に覚えやすさのために当てられた仮の姿である。もとの十二支は、生命が種から芽吹き、育ち、実り、また種に還るまでの十二の段階を表す漢字であった。子は「孳(ふえる)」——固い種の殻の中で、新しい命が萌しはじめる姿である。" },
+    { t: "一巡の物語", b: "丑は「紐(むすぶ)」、芽が殻を結んで出番を待つ。寅は「蠢(うごめく)」、地中で命が動きだす。卯は「冒(おかす)」、地表を冒して芽が顔を出す。やがて午は「忤(さからう)」——陽が極まり、陰が兆す折り返し。未は「味(あじわう)」、実が熟して味を成す。酉は「醸(かもす)」、実りで酒を醸し、亥は「核(たね)」、命がふたたび種に還る。十二支とは一年の、そして万物の生育史なのである。" },
+    { t: "日々に読む", b: "この字義を知れば、暦の見え方が変わる。「未の日」はただの羊の日ではなく、味わい深める日。「申の日」は伸びの日、「戌の日」は刈り納める日。今日という一日が、生命の長い物語のどの頁に当たるのか——それを読むのが、支の字義の楽しみである。" }
+  ],
+  q: "今日の支の字義は何か。その一字を、今日のどの所作に映すか。" },
+
+{ id: "koto2", maki: "ことわり", no: 15, title: "宿曜と三九——縁を読む補完の学", min: 3, palace: 0, audioUrl: null,
+  steps: [
+    { t: "位置づけ", b: "二十七宿と三九の秘法は、ガイアコード原典の外にある「補完」の体系である。月が天を巡る二十七日の宿りをもとに、日と人の縁を読む古い学問で、空海が唐より将来したと伝わる宿曜経に連なる。本アプリでは体系の内外を混ぜぬよう、補完である旨を必ず明記して併載している——学びの誠実は、出典の峻別から始まる。" },
+    { t: "三九のしくみ", b: "おのれの生まれ日の宿を「本命宿」とする。そこから命・栄・衰・安・危・成・壊・友・親の九つが三巡して二十七——ゆえに三九という。日々めぐる宿がこの九つのどこに当たるかで、その日の縁の質を読む。栄と親は引き立ての縁、壊は波の大きい縁、業と胎は深い因縁——といった具合である。" },
+    { t: "使いどころ", b: "肝心なのは使い方である。壊の日に人生を悲観するのではなく、大事な談判をその日から外す。成の日に締結を寄せ、友の日に人と会う約束を置く。つまり三九は運命の宣告ではなく、予定の「置き方」を整える段取りの知恵である。地図は使う者の手の中でだけ、道具になる。" }
+  ],
+  q: "今週の予定のうち一つだけ日を動かせるなら、どれを、どの縁の日へ動かすか。" },
+
+{ id: "koto3", maki: "ことわり", no: 16, title: "五行と縁——相生相剋は砥石", min: 3, palace: 0, audioUrl: null,
+  steps: [
+    { t: "五つの気", b: "木は伸ばし、火は照らし、土は受けとめ、金は締めくくり、水は潤す。九つの性はこの五行のいずれかに属し、人と人が並ぶとき、そこに気の流れが生まれる。この見立ては一般気学に準ずる補完であり、原典の外であることを断った上で、縁を読む地図として用いる。" },
+    { t: "生かすと剋す", b: "水は木を育て、木は火を燃やし、火は土を肥やす——与える側と受ける側のある縁を「相生」という。いっぽう木は土を突き破り、金は木を断つ——ぶつかりの生まれる縁が「相剋」。同じ気を分かち合うのが「比和」である。相生ばかりの組は心地よいが緩みやすく、剋のある組は軋むが締まる。どちらが上等ということはない。" },
+    { t: "剋は凶にあらず", b: "王道學の流儀では、相剋を凶と断じない。ぶつかりは互いの砥石である。刃は砥石に擦られて初めて切れるようになる——ただし当て方を誤れば、刃も砥石も欠ける。役割を分け、距離感を設計し、剋の摩擦を研磨に変える。縁の地図は人を遠ざけるためでなく、活かし合う置き方を見つけるために読むのである。" }
+  ],
+  q: "あなたの周りの「剋の縁」を一人思い浮かべよ。その人があなたを磨いた点を、一つ挙げられるか。" }
+];
+
+/* 宮番号→期講 */
+var LESSON_BY_PALACE = {};
+(function () { for (var i = 0; i < LESSONS.length; i++) if (LESSONS[i].palace) LESSON_BY_PALACE[LESSONS[i].palace] = LESSONS[i].id; })();
+function lessonById(id) { for (var i = 0; i < LESSONS.length; i++) if (LESSONS[i].id === id) return LESSONS[i]; return null; }
+/* 今日の講: 入門未修→順に / 済→当日の期講 / それも済→ことわり未修 / 全修→当日の期講(復習) */
+function lessonForToday(palace, doneIds) {
+  var i, L;
+  for (i = 0; i < LESSONS.length; i++) { L = LESSONS[i]; if (L.maki === "入門" && doneIds.indexOf(L.id) < 0) return { id: L.id, why: "入門 その" + L.no }; }
+  var kid = LESSON_BY_PALACE[palace];
+  if (kid && doneIds.indexOf(kid) < 0) return { id: kid, why: "今日の期の講" };
+  for (i = 0; i < LESSONS.length; i++) { L = LESSONS[i]; if (L.maki === "ことわり" && doneIds.indexOf(L.id) < 0) return { id: L.id, why: "ことわり" }; }
+  for (i = 0; i < LESSONS.length; i++) { L = LESSONS[i]; if (doneIds.indexOf(L.id) < 0) return { id: L.id, why: "未修の講" }; }
+  return { id: kid || LESSONS[0].id, why: "復習——今日の期の講" };
+}
+
+/* ============================================================
+ * 巡(めぐり) q3_ui.js — UI v0.3
+ * 日 / 暦 / 律 / 命 / 行 の5ビュー
+ * 永続化: localStorage(利用不可環境ではメモリへ自動フォールバック)
+ * ============================================================ */
+"use strict";
+
+/* ---------- 永続化ラッパ ---------- */
+var Store = (function () {
+  var mem = {};
+  var ok = false;
+  try { var t = "__meguri_t__"; localStorage.setItem(t, "1"); localStorage.removeItem(t); ok = true; } catch (e) { ok = false; }
+  return {
+    persistent: ok,
+    get: function (k) { try { return ok ? localStorage.getItem(k) : (k in mem ? mem[k] : null); } catch (e) { return (k in mem ? mem[k] : null); } },
+    set: function (k, v) { try { if (ok) { localStorage.setItem(k, v); return; } } catch (e) {} mem[k] = v; },
+    del: function (k) { try { if (ok) { localStorage.removeItem(k); return; } } catch (e) {} delete mem[k]; }
+  };
+})();
+
+/* ---------- 状態 ---------- */
+var S = {
+  tab: "day",
+  sel: null,           // 表示中の日付 {y,m,d}
+  calYM: null,         // 暦タブの表示年月 {y,m}
+  profile: null,       // {by,bm,bd,bh(null可), sample(bool)}
+  enSel: [],           // 縁タブ: 選択中の人物id("me"含む)
+  enPair: null,        // 縁タブ: マトリクスで選んだ対 [idA,idB]
+  detail: null,        // 詳細モーダル対象日 {y,m,d} | null
+  lesson: null         // 講ビューア {id, step} | null
+};
+function todayYMD() { var t = new Date(); return { y: t.getFullYear(), m: t.getMonth() + 1, d: t.getDate() }; }
+function sameYMD(a, b) { return a.y === b.y && a.m === b.m && a.d === b.d; }
+function ymdKey(o) { return o.y + "-" + (o.m < 10 ? "0" : "") + o.m + "-" + (o.d < 10 ? "0" : "") + o.d; }
+function loadProfile() {
+  var raw = Store.get("meguri.profile");
+  if (raw) { try { var p = JSON.parse(raw); if (p && p.by) return p; } catch (e) {} }
+  return { by: 1986, bm: 6, bd: 15, bh: null, sample: true }; // 書籍付箋と同じ1986年・五黄のサンプル(日付は仮)
+}
+function saveProfile(p) { Store.set("meguri.profile", JSON.stringify(p)); }
+function loadNote(dateKey) {
+  var raw = Store.get("meguri.note." + dateKey);
+  if (raw) { try { var a = JSON.parse(raw); if (Array.isArray(a)) return a; } catch (e) {} }
+  return [];
+}
+function saveNote(dateKey, arr) { Store.set("meguri.note." + dateKey, JSON.stringify(arr)); }
+function noteCount(dateKey) { return loadNote(dateKey).length; }
+
+/* ---------- ユーティリティ ---------- */
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+var NUMJ = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+var WAFU_MONTH = ["", "睦月", "如月", "弥生", "卯月", "皐月", "水無月", "文月", "葉月", "長月", "神無月", "霜月", "師走"];
+function toKanji(n) { // 1〜39の漢数字
+  if (n <= 10) return n === 10 ? "十" : NUMJ[n];
+  var t = Math.floor(n / 10), o = n % 10;
+  return (t === 1 ? "" : NUMJ[t]) + "十" + (o ? NUMJ[o] : "");
+}
+function toKanjiDigits(n) { return String(n).replace(/[0-9]/g, function (c) { return "〇一二三四五六七八九"[+c]; }); }
+function phaseKanji(name) { return name.replace(/[0-9]/g, function (c) { return NUMJ[+c]; }); }
+function warekiKanji(y) { return wareki(y).replace(/\d+/, function (m) { return toKanji(+m); }); }
+var STAR_SHORT = { 1: "一白", 2: "二黒", 3: "三碧", 4: "四緑", 5: "五黄", 6: "六白", 7: "七赤", 8: "八白", 9: "九紫" };
+var YOBI = ["日", "月", "火", "水", "木", "金", "土"];
+function yobiOf(y, m, d) { return YOBI[new Date(y, m - 1, d).getDay()]; }
+function kindCls(kind) { return kind === "盛" ? "sei" : kind === "衰" ? "sui" : "gou"; }
+function kindPb(kind) { return kind === "盛" ? "pb-sei" : kind === "衰" ? "pb-sui" : "pb-gou"; }
+function kyurekiStr(k) { return k && k.month ? (k.leap ? "閏" : "") + k.month + "月" + k.day + "日" : "―"; }
+function natal() { var p = S.profile; return natalOdo(p.by, p.bm, p.bd, p.bh); }
+
+/* ---------- 円相ゲージSVG ---------- */
+function ensoGauge(h, kind) {
+  var pct = Math.max(0.05, h / 90);
+  var R = 44, C = 2 * Math.PI * R, dash = (C * pct).toFixed(1);
+  var col = kind === "盛" ? "#A93B32" : kind === "衰" ? "#2E5E4E" : "#9A7B3A";
+  return '<svg viewBox="0 0 108 108" width="108" height="108">' +
+    '<circle cx="54" cy="54" r="' + R + '" fill="none" stroke="rgba(38,34,27,.1)" stroke-width="7"/>' +
+    '<circle cx="54" cy="54" r="' + R + '" fill="none" stroke="' + col + '" stroke-width="7" stroke-linecap="round" ' +
+    'stroke-dasharray="' + dash + ' ' + C.toFixed(1) + '" transform="rotate(-90 54 54)" opacity=".85"/>' +
+    '<text x="54" y="50" text-anchor="middle" font-size="21" font-weight="800" fill="#26221B" font-family="inherit">' + h + '</text>' +
+    '<text x="54" y="68" text-anchor="middle" font-size="9.5" fill="#7A715F" letter-spacing="2">波高</text></svg>';
+}
+
+/* ---------- 日盤SVG(南上) ---------- */
+function banSVG(center, myStar) {
+  // 南上配置(定位): 上段 巽4 離9 坤2 / 中段 震3 中5 兌7 / 下段 艮8 坎1 乾6
+  var layout = [[4, 9, 2], [3, 5, 7], [8, 1, 6]];
+  var stars = boardStars(center);
+  var myPalace = palaceOf(center, myStar);
+  var s = '<svg class="ban" viewBox="0 0 300 330">';
+  s += '<text x="150" y="18" text-anchor="middle" font-size="13" fill="#9A7B3A" letter-spacing="6" font-family="inherit">南</text>';
+  s += '<text x="150" y="326" text-anchor="middle" font-size="13" fill="#7A715F" letter-spacing="6" font-family="inherit">北</text>';
+  s += '<text x="12" y="170" text-anchor="middle" font-size="13" fill="#7A715F" font-family="inherit">東</text>';
+  s += '<text x="288" y="170" text-anchor="middle" font-size="13" fill="#7A715F" font-family="inherit">西</text>';
+  for (var r = 0; r < 3; r++) for (var c = 0; c < 3; c++) {
+    var p = layout[r][c], st = stars[p];
+    var x = 28 + c * 82, y = 30 + r * 90;
+    var mine = (p === myPalace);
+    s += '<rect x="' + x + '" y="' + y + '" width="80" height="88" rx="10" fill="' + (mine ? "rgba(169,59,50,.08)" : "rgba(255,255,255,.35)") + '" stroke="' + (mine ? "#A93B32" : "rgba(38,34,27,.16)") + '" stroke-width="' + (mine ? 1.8 : 1) + '"/>';
+    s += '<text x="' + (x + 40) + '" y="' + (y + 24) + '" text-anchor="middle" font-size="12" fill="#7A715F" font-family="inherit">' + PALACE_NAME[p] + "宮" + '</text>';
+    s += '<text x="' + (x + 40) + '" y="' + (y + 56) + '" text-anchor="middle" font-size="21" font-weight="800" fill="' + (mine ? "#A93B32" : "#26221B") + '" font-family="inherit">' + STAR_SHORT[st] + '</text>';
+    if (mine) s += '<text x="' + (x + 40) + '" y="' + (y + 76) + '" text-anchor="middle" font-size="10" fill="#A93B32" letter-spacing="2" font-family="inherit">回座</text>';
+  }
+  s += '</svg>';
+  return s;
+}
+
+/* ============================================================
+ * ビュー: 日
+ * ============================================================ */
+function viewDay() {
+  var d = S.sel, td = todayYMD();
+  var isToday = sameYMD(d, td);
+  var nt = natal();
+  var n = nt.honmei;
+  var dO = dayOdo(d.y, d.m, d.d, n);
+  var sm = setsuMonth(d.y, d.m, d.d);
+  var mO = monthOdo(sm.eYear, sm.mIdx, n);
+  var yO = yearOdo(sm.eYear, n);
+  var kyu = kyureki(d.y, d.m, d.d);
+  var de = dayEto(d.y, d.m, d.d);
+  var ye = yearEto(sm.eYear);
+  var nc = noteCount(ymdKey(td)); // 気力は「今日の実践」に基づく
+  var doyo = doyoInfo(d.y, d.m, d.d);
+  // 節気(当日のみ)
+  var sekki = sekkiOfYear(d.y).filter(function (s) { return s.m === d.m && s.d === d.d; });
+  // 宿曜
+  var dsIdx = shukuOf(kyu);
+  var sk = sanku(nt.shukuIdx, dsIdx);
+  var skInfo = sk ? SANKU_INFO[sk.name] : null;
+  // 十二支
+  var dShi = de.charAt(1);
+  var shiI = SHI[dShi];
+  var rel = shiRel(ye.shi, dShi);
+  var nowH = new Date().getHours();
+  var koku = kokuOf(nowH);
+  var guide = guideText(dO.phase, nc, n);
+
+  var kou = kouOf(d.y, d.m, d.d);
+  var sc = SEKKI_COLOR[kou.sekki];
+  var isSetsuiri = sekki.length > 0;
+  var yb = new Date(d.y, d.m - 1, d.d).getDay();
+  var yoCls = yb === 0 ? " yo-sun" : (yb === 6 ? " yo-sat" : "");
+  var h = '';
+  h += '<div class="datenav">' +
+    '<button class="dbtn" onclick="navDay(-1)">◀ きのう</button>' +
+    '<div class="dmain">' + d.y + '年' + d.m + '月' + d.d + '日(' + yobiOf(d.y, d.m, d.d) + ')</div>' +
+    '<button class="dbtn" onclick="navDay(1)">あす ▶</button></div>';
+  if (!isToday) h += '<div style="text-align:center;margin:-6px 0 12px"><button class="dbtn today" onclick="goToday()">今日にもどる</button></div>';
+
+  // 日めくりヒーロー
+  h += '<div class="card hero"><div class="hgrid">';
+  h += '<div class="hside"><span class="swatch" style="background:' + sc[1] + '" title="節気のいろ・' + sc[0] + '"></span>' +
+       '<span class="tate hsekki"' + (isSetsuiri ? ' style="color:var(--shu)"' : '') + '>' + kou.sekki + (isSetsuiri ? '・節入' : '') + '</span>' +
+       '<span class="tate hkou">' + kou.name + '</span></div>';
+  h += '<div class="hcenter">' +
+       '<div class="hyear">' + esc(warekiKanji(d.y)) + ' ' + ye.str + '<span class="wafu">' + WAFU_MONTH[d.m] + '</span></div>' +
+       '<div class="hmonth">' + toKanji(d.m) + '月</div>' +
+       '<div class="hday' + yoCls + '">' + d.d + '</div>' +
+       '<div class="hyoubi' + yoCls + '">' + yobiOf(d.y, d.m, d.d) + '曜日</div>' +
+       '<div class="hkyu">旧暦 ' + (kyu.month ? (kyu.leap ? '閏' : '') + toKanji(kyu.month) + '月' + toKanji(kyu.day) + '日' : '―') + '</div>' +
+       '<div class="heto">' + de + 'の日</div></div>';
+  h += '<div class="hside"><span class="inban">' + phaseKanji(dO.phase.name) + '</span>' +
+       (dsIdx >= 0 ? '<span class="tate hshuku">' + SHUKU[dsIdx] + '宿</span>' : '') + '</div>';
+  h += '</div><div class="hfoot">' + ye.str + '年 ' + sm.branch + '月(節)' + (doyo ? ' ・ ' + doyo.name + toKanji(doyo.dayN) + '日目' : '') + ' ・ 節気のいろ「' + sc[0] + '」</div></div>';
+
+  h += '<button class="btn-wide" onclick="openDetail()">この日をくわしく観る</button>';
+
+  // 回座カード
+  var ph = dO.phase;
+  h += '<div class="card"><div class="chd"><span class="ct">け ふ の 回 座</span><span class="csub">日盤' + STAR_SHORT[dO.center] + '中宮</span></div>';
+  h += '<div class="kaiza"><div class="gz">' + ensoGauge(ph.h, ph.kind) + '</div><div>';
+  h += '<div class="phase-name"><span class="kind-' + (ph.kind === "盛" ? "sei" : ph.kind === "衰" ? "sui" : "gou") + '">' + phaseKanji(ph.name) + '</span></div>';
+  h += '<div class="meidai">' + esc(ph.meidai) + '</div>';
+  h += '<div style="margin-top:7px"><span class="badge">' + PALACE_NAME[dO.palace] + '宮</span><span class="badge">' + esc(ph.kei) + '</span><span class="badge kin">季・' + ph.season + '</span></div>';
+  h += '<div class="muted" style="margin-top:6px;font-size:.74rem">年盤 ' + yO.phase.name + ' ／ 月盤 ' + mO.phase.name + '</div>';
+  h += '</div></div>';
+  h += '<div class="guide">';
+  for (var i = 0; i < guide.length; i++) h += '<p>' + esc(guide[i]) + '</p>';
+  h += '</div>';
+  h += '<div class="notify"><b>今日のことば</b>(通知プレビュー)<br>' + esc(notifyLine(ph, nc, n)) + '</div>';
+  h += '<div class="note-warn">盛運は社会を発展させる創造の磁気、衰運は内面を充実させる磁気。衰運は凶ではありません。</div></div>';
+
+  // 宿曜カード
+  if (dsIdx >= 0 && skInfo) {
+    h += '<div class="card"><div class="chd"><span class="ct">宿 曜</span><span class="csub">補完体系(ガイアコード原典外)</span></div>';
+    h += '<div class="rowline"><span class="k">けふの宿</span><span class="v"><b style="font-size:1.06rem">' + SHUKU[dsIdx] + '宿</b> — ' + esc(SHUKU_INFO[SHUKU[dsIdx]]) + '</span></div>';
+    h += '<div class="rowline"><span class="k">三九の縁</span><span class="v"><span class="en-' + skInfo.cls + '">' + sk.name + '(' + skInfo.label + ')</span> 第' + NUMJ[sk.cycle] + '巡</span></div>';
+    h += '<div class="muted" style="margin-top:8px;font-size:.82rem">' + esc(skInfo.desc) + '</div>';
+    h += '<div class="muted" style="margin-top:4px;font-size:.72rem">本命宿: ' + nt.shuku + '宿(' + nt.kyureki.month + '月' + nt.kyureki.day + '日生)</div></div>';
+  }
+
+  // 十二支カード
+  h += '<div class="card"><div class="chd"><span class="ct">十 二 支</span><span class="csub">字義でよむ</span></div>';
+  h += '<div class="rowline"><span class="k">けふの支</span><span class="v"><b style="font-size:1.06rem">' + dShi + '</b> = ' + shiI.ji + '(' + STAR_SHORT[shiI.sei] + '・' + shiI.kan + ')</span></div>';
+  h += '<div class="muted" style="margin-top:6px;font-size:.84rem">' + esc(shiI.imi) + '</div>';
+  if (rel) h += '<div class="alert' + (rel.rel === "支合" ? " gou" : "") + '">' + ye.shi + '年×' + dShi + '日 = <b>' + rel.rel + '</b>。' + esc(rel.note) + '</div>';
+  if (isToday) h += '<div class="rowline" style="margin-top:8px"><span class="k">いまの刻</span><span class="v">' + koku + 'の刻(' + SHI[koku].ji + ') ' + esc(SHI[koku].imi) + '</span></div>';
+  h += '</div>';
+
+  // 日盤カード
+  h += '<div class="card"><div class="chd"><span class="ct">日 盤</span><span class="csub">南上・気の現在地</span></div>';
+  h += banSVG(dO.center, n);
+  h += '<div class="muted" style="text-align:center;font-size:.72rem;margin-top:4px">本命 ' + STAR_SHORT[n] + ' は ' + PALACE_NAME[dO.palace] + '宮に回座</div></div>';
+
+  return h;
+}
+function navDay(dir) {
+  var j = jdnJST(S.sel.y, S.sel.m, S.sel.d) + dir;
+  var nd = ymdFromJD(j - 0.5 + 0.1 - 9 / 24); // JDN→日付
+  S.sel = { y: nd.y, m: nd.m, d: nd.d };
+  render();
+}
+function goToday() { S.sel = todayYMD(); render(); }
+function jumpToDay(y, m, d) { S.sel = { y: y, m: m, d: d }; S.tab = "day"; render(); try { window.scrollTo(0, 0); } catch (e) {} }
+
+/* ============================================================
+ * ビュー: 暦(月間)
+ * ============================================================ */
+function viewCal() {
+  var nt = natal(), n = nt.honmei;
+  var ym = S.calYM, td = todayYMD();
+  var first = new Date(ym.y, ym.m - 1, 1);
+  var startW = first.getDay();
+  var days = new Date(ym.y, ym.m, 0).getDate();
+  var h = '<div class="card"><div class="mnav">' +
+    '<button class="dbtn" onclick="navMonth(-1)">◀</button>' +
+    '<div class="mtitle">' + toKanjiDigits(ym.y) + '年 ' + toKanji(ym.m) + '月<span class="wafu" style="font-size:.72rem;color:var(--kincha);margin-left:.5em">' + WAFU_MONTH[ym.m] + '</span></div>' +
+    '<button class="dbtn" onclick="navMonth(1)">▶</button></div>';
+  h += '<table class="cal"><tr>';
+  for (var w = 0; w < 7; w++) h += '<th>' + YOBI[w] + '</th>';
+  h += '</tr><tr>';
+  for (var b = 0; b < startW; b++) h += '<td class="off"></td>';
+  var col = startW;
+  for (var d = 1; d <= days; d++) {
+    if (col === 7) { h += '</tr><tr>'; col = 0; }
+    var kyu = kyureki(ym.y, ym.m, d);
+    var dsIdx = shukuOf(kyu);
+    var sk = sanku(nt.shukuIdx, dsIdx);
+    var ph = dayOdo(ym.y, ym.m, d, n).phase;
+    var isT = (ym.y === td.y && ym.m === td.m && d === td.d);
+    var isSel = sameYMD({ y: ym.y, m: ym.m, d: d }, S.sel);
+    var enCls = sk ? SANKU_INFO[sk.name].cls : "";
+    h += '<td class="' + (isT ? "today " : "") + (isSel ? "selv" : "") + '" onclick="jumpToDay(' + ym.y + ',' + ym.m + ',' + d + ')">' +
+      '<span class="dn">' + d + '</span>' +
+      (sk ? '<span class="en en-' + enCls + '">' + sk.name + '</span>' : '<span class="en">―</span>') +
+      '<span class="pbar ' + kindPb(ph.kind) + '" style="opacity:' + (0.3 + 0.7 * ph.h / 90).toFixed(2) + '"></span></td>';
+    col++;
+  }
+  while (col < 7) { h += '<td class="off"></td>'; col++; }
+  h += '</tr></table>';
+  h += '<div class="legend"><span><i style="background:var(--shu2)"></i>盛運</span><span><i style="background:var(--sei)"></i>衰運</span><span><i style="background:var(--kincha2)"></i>盛衰合</span><span>文字=三九の縁(タップで詳細)</span></div>';
+  h += '<div class="note-warn">帯の濃さは波高。三九の縁は本命宿(' + nt.shuku + '宿)から。</div></div>';
+
+  // 月の回座サマリ
+  var smNow = setsuMonth(ym.y, ym.m, 15);
+  var mO = monthOdo(smNow.eYear, smNow.mIdx, n);
+  h += '<div class="card"><div class="chd"><span class="ct">こ の 月 の 回 座</span><span class="csub">' + smNow.branch + '月(節切り)</span></div>';
+  h += '<div class="kaiza"><div class="gz">' + ensoGauge(mO.phase.h, mO.phase.kind) + '</div><div>';
+  h += '<div class="phase-name"><span class="kind-' + (mO.phase.kind === "盛" ? "sei" : mO.phase.kind === "衰" ? "sui" : "gou") + '">' + phaseKanji(mO.phase.name) + '</span></div>';
+  h += '<div class="meidai">' + esc(mO.phase.meidai) + '</div>';
+  h += '<div style="margin-top:7px"><span class="badge">' + PALACE_NAME[mO.palace] + '宮</span><span class="badge kin">月盤' + STAR_SHORT[mO.center] + '中宮</span></div>';
+  h += '</div></div></div>';
+  return h;
+}
+function navMonth(dir) {
+  var m = S.calYM.m + dir, y = S.calYM.y;
+  if (m > 12) { m = 1; y++; } if (m < 1) { m = 12; y--; }
+  S.calYM = { y: y, m: m };
+  render();
+}
+
+/* ============================================================
+ * ビュー: 律(りつどう)
+ * ============================================================ */
+function nineYearCurve(n) {
+  // 現在のeYearから、坤(第1盛運)入りの年を逆算し9年並べる
+  var td = todayYMD();
+  var smNow = setsuMonth(td.y, td.m, td.d);
+  var E0 = smNow.eYear;
+  var pNow = yearOdo(E0, n).palace;
+  var idx = CYC.indexOf(pNow);
+  var startY = E0 - idx;
+  var nt = natal();
+  var W = 340, H = 200, padL = 14, padR = 14, top = 42, base = 172;
+  var pts = [];
+  for (var i = 0; i < 9; i++) {
+    var p = CYC[i], hh = PHASE[p].h;
+    var x = padL + (W - padL - padR) * i / 8;
+    var y = base - (base - top) * hh / 90;
+    pts.push({ x: x, y: y, p: p, year: startY + i, age: startY + i - nt.eYear });
+  }
+  var s = '<svg class="curve" viewBox="0 0 ' + W + ' 236">';
+  // 四季象限
+  var seasons = [["春", 0, 2.5], ["夏", 2.5, 4.5], ["秋", 4.5, 6.5], ["冬", 6.5, 8]];
+  var scol = { "春": "rgba(169,59,50,.045)", "夏": "rgba(154,123,58,.06)", "秋": "rgba(46,94,78,.05)", "冬": "rgba(74,68,56,.05)" };
+  for (var q = 0; q < 4; q++) {
+    var x0 = padL + (W - padL - padR) * seasons[q][1] / 8, x1 = padL + (W - padL - padR) * seasons[q][2] / 8;
+    s += '<rect x="' + x0 + '" y="' + (top - 22) + '" width="' + (x1 - x0) + '" height="' + (base - top + 22) + '" fill="' + scol[seasons[q][0]] + '"/>';
+    s += '<text x="' + ((x0 + x1) / 2) + '" y="' + (top - 8) + '" text-anchor="middle" font-size="11" fill="#9A7B3A" letter-spacing="3" font-family="inherit">' + seasons[q][0] + '</text>';
+  }
+  // 曲線(スムーズ)
+  var path = "M " + pts[0].x + " " + pts[0].y;
+  for (var j = 1; j < 9; j++) {
+    var cx = (pts[j - 1].x + pts[j].x) / 2;
+    path += " C " + cx + " " + pts[j - 1].y + " " + cx + " " + pts[j].y + " " + pts[j].x + " " + pts[j].y;
+  }
+  s += '<path d="' + path + '" fill="none" stroke="#9A7B3A" stroke-width="2.4" opacity=".8"/>';
+  s += '<line x1="' + padL + '" y1="' + base + '" x2="' + (W - padR) + '" y2="' + base + '" stroke="rgba(38,34,27,.2)"/>';
+  for (var k = 0; k < 9; k++) {
+    var pt = pts[k], cur = (pt.year === E0);
+    if (cur) s += '<circle cx="' + pt.x + '" cy="' + pt.y + '" r="10" fill="none" stroke="#A93B32" stroke-width="2.2"/>';
+    s += '<circle cx="' + pt.x + '" cy="' + pt.y + '" r="4" fill="' + (cur ? "#A93B32" : "#4A4438") + '"/>';
+    s += '<text x="' + pt.x + '" y="' + (base + 16) + '" text-anchor="middle" font-size="9.6" fill="' + (cur ? "#A93B32" : "#7A715F") + '" font-weight="' + (cur ? 800 : 400) + '" font-family="inherit">' + pt.year + '</text>';
+    s += '<text x="' + pt.x + '" y="' + (base + 28) + '" text-anchor="middle" font-size="8.6" fill="#7A715F" font-family="inherit">' + pt.age + '歳</text>';
+    s += '<text x="' + pt.x + '" y="' + (pt.y - (cur ? 15 : 9)) + '" text-anchor="middle" font-size="8.8" fill="' + (cur ? "#A93B32" : "#7A715F") + '" font-family="inherit">' + PHASE[pt.p].name.replace("運期", "").replace("盛衰合期", "盛衰合") + '</text>';
+  }
+  s += '</svg>';
+  return s;
+}
+function phaseShort(ph) {
+  if (ph.kind === "合") return "合";
+  return (ph.kind === "盛" ? "盛" : "衰") + ["","一","二","三","四","五"][ph.no];
+}
+function stripHTML(items) { // items: [{label, phase, now}]
+  var h = '<div class="stripwrap"><div class="strip">';
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i], ph = it.phase;
+    var cls = ph.kind === "盛" ? "k-sei" : ph.kind === "衰" ? "k-sui" : "k-gou";
+    h += '<div class="scell' + (it.now ? " now" : "") + '"><div class="sl">' + esc(it.label) + '</div>' +
+      '<div class="sv ' + cls + '">' + phaseShort(ph) + '</div>' +
+      '<div class="sh"><div class="shb" style="height:' + Math.max(3, 26 * ph.h / 90).toFixed(0) + 'px"></div></div></div>';
+  }
+  return h + '</div></div>';
+}
+function viewRitsu() {
+  var nt = natal(), n = nt.honmei;
+  var td = todayYMD();
+  var smNow = setsuMonth(td.y, td.m, td.d);
+  var h = '<div class="card"><div class="chd"><span class="ct">生 命 の 春 夏 秋 冬</span><span class="csub">九年律</span></div>';
+  h += nineYearCurve(n);
+  h += '<div class="note-warn">盛運=社会を発展させる創造の磁気/衰運=内面を充実させる磁気。生気(特性十以上の実践)の人は盛衰を問わず常勝する——これが螺旋の核。</div></div>';
+
+  // 十二月律
+  var mItems = [];
+  for (var i = 0; i < 12; i++) {
+    mItems.push({ label: MONTH_BRANCH[i] + "月", phase: monthOdo(smNow.eYear, i, n).phase, now: i === smNow.mIdx });
+  }
+  h += '<div class="card"><div class="chd"><span class="ct">十 二 月 律</span><span class="csub">' + esc(wareki(smNow.eYear)) + '節(節切り)</span></div>' + stripHTML(mItems);
+  h += '<div class="note-warn">月・日への展開は年律と同型のアプリ拡張(設計書三・3.1)。</div></div>';
+
+  // 三十日律(今日±14日)
+  var dItems = [];
+  var j0 = jdnJST(td.y, td.m, td.d);
+  for (var k = -7; k <= 22; k++) {
+    var dd = ymdFromJD(j0 + k - 0.5 + 0.1 - 9 / 24);
+    dItems.push({ label: dd.m + "/" + dd.d, phase: dayOdo(dd.y, dd.m, dd.d, n).phase, now: k === 0 });
+  }
+  h += '<div class="card"><div class="chd"><span class="ct">三 十 日 律</span><span class="csub">今日を含む30日</span></div>' + stripHTML(dItems) + '</div>';
+  return h;
+}
+
+/* ============================================================
+ * ビュー: 命(いのち)
+ * ============================================================ */
+function viewInochi() {
+  var p = S.profile;
+  var nt = natal();
+  var h = '<div class="card"><div class="chd"><span class="ct">生 年 月 日</span><span class="csub">' + (Store.persistent ? "この端末に保存されます" : "この画面を開いている間のみ保持") + '</span></div>';
+  var dv = p.by + "-" + (p.bm < 10 ? "0" : "") + p.bm + "-" + (p.bd < 10 ? "0" : "") + p.bd;
+  h += '<div class="forminline"><input type="date" id="bdate" value="' + dv + '" min="1900-01-01" max="2030-12-31">';
+  h += '<select id="bhour"><option value="">生時(任意)</option>';
+  for (var i = 0; i < 24; i++) h += '<option value="' + i + '"' + (p.bh === i ? " selected" : "") + '>' + i + '時台</option>';
+  h += '</select><button class="btn" onclick="applyProfile()">映 す</button></div>';
+  if (p.sample) h += '<div class="muted" style="font-size:.74rem">※現在は書籍付箋と同じ一九八六年生・五黄のサンプル(日付は仮)。ご自身の生年月日に更新してください。</div>';
+  h += '</div>';
+
+  // 四柱の九性
+  h += '<div class="card"><div class="chd"><span class="ct">四 柱 の 九 性</span><span class="csub">年・月・日・時の命式</span></div>';
+  h += '<div class="pilrow">';
+  h += '<div class="pill"><div class="pk">年命<br>(本命)</div><div class="pv" style="color:var(--shu)">' + STAR_SHORT[nt.honmei] + '</div><div class="pn">' + esc(SEI_INFO[nt.honmei].kei) + '</div></div>';
+  h += '<div class="pill"><div class="pk">月命</div><div class="pv">' + STAR_SHORT[nt.getsumei] + '</div><div class="pn">' + esc(SEI_INFO[nt.getsumei].kei) + '</div></div>';
+  h += '<div class="pill"><div class="pk">日命</div><div class="pv">' + STAR_SHORT[nt.nichimei] + '</div><div class="pn">' + esc(SEI_INFO[nt.nichimei].kei) + '</div></div>';
+  h += nt.jimei ? '<div class="pill"><div class="pk">時命</div><div class="pv">' + STAR_SHORT[nt.jimei] + '</div><div class="pn">' + esc(SEI_INFO[nt.jimei].kei) + '</div></div>'
+                : '<div class="pill" style="opacity:.45"><div class="pk">時命</div><div class="pv">―</div><div class="pn">生時未設定</div></div>';
+  h += '</div>';
+  h += '<div class="note-warn">本命=魂の性、月命=心の性、日命=行いの性、時命=秘めたる性としての四柱展開(アプリ拡張・要監修)。</div></div>';
+
+  // 本命の命式
+  var si = SEI_INFO[nt.honmei];
+  h += '<div class="card"><div class="chd"><span class="ct">本 命 の 命 式</span><span class="csub">' + esc(wareki(nt.eYear)) + '・' + nt.yearEtoStr + '年生</span></div>';
+  h += '<h2 class="big" style="color:var(--shu)">' + SEI_NAME[nt.honmei] + '</h2>';
+  h += '<div class="seibox"><b>' + esc(si.kei) + ' — ' + esc(si.meidai) + '</b>' + esc(si.tokucho) + '</div>';
+  h += '<div class="rowline" style="margin-top:8px"><span class="k">キーワード</span><span class="v">' + esc(si.kw) + '</span></div>';
+  var ys = SHI[nt.yearShi];
+  h += '<div class="rowline"><span class="k">年支の字義</span><span class="v">' + nt.yearShi + ' = ' + ys.ji + '。' + esc(ys.imi) + '</span></div>';
+  h += '</div>';
+
+  // 本命宿
+  if (nt.shukuIdx >= 0) {
+    h += '<div class="card"><div class="chd"><span class="ct">本 命 宿</span><span class="csub">宿曜(補完体系)</span></div>';
+    h += '<div class="rowline"><span class="k">宿</span><span class="v"><b style="font-size:1.1rem">' + nt.shuku + '宿</b>(旧暦' + kyurekiStr(nt.kyureki) + '生)</span></div>';
+    h += '<div class="muted" style="margin-top:7px;font-size:.86rem">' + esc(SHUKU_INFO[nt.shuku]) + '</div>';
+    h += '<div class="note-warn">宿曜二十七宿はガイアコード原典外の補完体系です。</div></div>';
+  }
+  return h;
+}
+function applyProfile() {
+  var dv = document.getElementById("bdate").value;
+  var hv = document.getElementById("bhour").value;
+  if (!dv) return;
+  var parts = dv.split("-");
+  S.profile = { by: +parts[0], bm: +parts[1], bd: +parts[2], bh: hv === "" ? null : +hv, sample: false };
+  saveProfile(S.profile);
+  render();
+}
+
+/* ============================================================
+ * ビュー: 行(幸せノート)
+ * ============================================================ */
+function viewGyo() {
+  var nt = natal(), n = nt.honmei;
+  var td = todayYMD(), dk = ymdKey(td);
+  var checks = loadNote(dk);
+  var nc = checks.length;
+  var ki = kiryoku(nc);
+  var list = TOKUSEI[n];
+  var h = '<div class="card"><div class="chd"><span class="ct">幸 せ ノ ー ト</span><span class="csub">' + td.y + '年' + td.m + '月' + td.d + '日 ・ ' + SEI_NAME[n] + 'の二十の特性</span></div>';
+  h += '<div class="kgauge"><div class="klabel k-' + ki.cls + '">' + ki.level + '</div>';
+  h += '<div style="flex:1"><div class="kbarwrap"><div class="kbar" style="width:' + (nc / 20 * 100).toFixed(0) + '%"></div></div>';
+  h += '<div class="kmarks"><span>滅気</span><span>退気6</span><span>活気10</span><span>生気14</span><span>元気18</span></div></div>';
+  h += '<div style="font-size:1.08rem;font-weight:800">' + nc + '<span style="font-size:.7rem;color:var(--sumi3)">/20</span></div></div>';
+  h += '<div class="muted" style="font-size:.8rem">' + esc(ki.desc) + '</div>';
+  h += '<ul class="tklist">';
+  for (var i = 0; i < list.length; i++) {
+    var done = checks.indexOf(i) >= 0;
+    h += '<li class="' + (done ? "done" : "") + '" onclick="toggleTok(' + i + ')"><span class="tkbox"></span><span>' + esc(list[i]) + '</span></li>';
+  }
+  h += '</ul>';
+  // 連続日数(活気圏10以上)
+  var streak = 0;
+  var j0 = jdnJST(td.y, td.m, td.d);
+  for (var b = 0; b < 999; b++) {
+    var dd = ymdFromJD(j0 - b - 0.5 + 0.1 - 9 / 24);
+    if (noteCount(ymdKey({ y: dd.y, m: dd.m, d: dd.d })) >= 10) streak++; else break;
+  }
+  h += '<div class="streak">活気圏(十以上)の連続 <b>' + streak + '</b> 日';
+  if (!Store.persistent) h += '<br><span style="font-size:.68rem">※この環境では保存が効かないため、画面を開いている間のみ保持されます</span>';
+  h += '</div>';
+  h += '<div class="note-warn">特性ラベルは原典より要校正(仮要約)。生気(十以上の実践)の人は盛運・衰運にかかわらず常勝する——幸せノートは、その螺旋への入口です。</div></div>';
+
+  // 王道學 三分の講 一覧
+  var doneIds = lessonDone();
+  h += '<div class="card"><div class="chd"><span class="ct">三 分 の 講</span><span class="csub">修了 ' + doneIds.length + ' ／ 全十六講</span></div>';
+  var makis = ["入門", "期", "ことわり"];
+  for (var mi = 0; mi < makis.length; mi++) {
+    h += '<div class="dlbl" style="margin-top:' + (mi ? '12px' : '4px') + '">巻 ・ ' + makis[mi] + '</div>';
+    for (var li = 0; li < LESSONS.length; li++) {
+      var L = LESSONS[li];
+      if (L.maki !== makis[mi]) continue;
+      var dn = doneIds.indexOf(L.id) >= 0;
+      h += '<div class="kobtn" style="margin-top:7px" onclick="openLesson(\'' + L.id + '\')">' +
+        '<span class="koico">' + esc(L.maki) + '</span>' +
+        '<span class="kot"><b>' + esc(L.title) + '</b><span>第' + toKanji(L.no) + '講 ・ 約三分</span></span>' +
+        '<span class="shuin' + (dn ? '' : ' mi') + '">' + (dn ? '修' : '講') + '</span></div>';
+    }
+  }
+  h += '<div class="note-warn">講の本文は原典・講義要旨の仮要約【要監修】。音声版は監修後に同じ画面で聴けるよう設計済み。</div></div>';
+  return h;
+}
+function toggleTok(i) {
+  var dk = ymdKey(todayYMD());
+  var arr = loadNote(dk);
+  var at = arr.indexOf(i);
+  if (at >= 0) arr.splice(at, 1); else arr.push(i);
+  saveNote(dk, arr);
+  render();
+}
+
+/* ============================================================
+ * ルート
+ * ============================================================ */
+/* ---------- ビューレジストリ: 機能追加はここに1エントリ登録するだけ ---------- */
+var VIEWS = [
+  { id: "day",    ico: "日", label: "きょう",   render: function(){ return viewDay(); } },
+  { id: "cal",    ico: "暦", label: "こよみ",   render: function(){ return viewCal(); },
+    onEnter: function(){ if (!S.calYM) { var t = todayYMD(); S.calYM = { y: t.y, m: t.m }; } } },
+  { id: "ritsu",  ico: "律", label: "りつどう", render: function(){ return viewRitsu(); } },
+  { id: "inochi", ico: "命", label: "いのち",   render: function(){ return viewInochi(); } },
+  { id: "en",     ico: "縁", label: "えにし",   render: function(){ return viewEn(); } },
+  { id: "gyo",    ico: "行", label: "ノート",   render: function(){ return viewGyo(); } }
+];
+function findView(id) { for (var i = 0; i < VIEWS.length; i++) if (VIEWS[i].id === id) return VIEWS[i]; return VIEWS[0]; }
+function render() {
+  var tabsEl = document.getElementById("tabs");
+  var h = "";
+  for (var i = 0; i < VIEWS.length; i++) {
+    var t = VIEWS[i];
+    h += '<button class="tab' + (S.tab === t.id ? " on" : "") + '" onclick="setTab(\'' + t.id + '\')"><span class="tico">' + t.ico + '</span>' + t.label + '</button>';
+  }
+  tabsEl.innerHTML = h;
+  var app = document.getElementById("app");
+  var body = "";
+  try {
+    body = findView(S.tab).render();
+  } catch (e) {
+    body = '<div class="card"><div class="ct">表示エラー</div><div class="muted">' + esc(e.message) + '</div></div>';
+  }
+  var modal = "";
+  if (S.lesson) { try { modal = lessonHTML(); } catch (e) { modal = ""; } }
+  else if (S.detail) { try { modal = detailHTML(S.detail); } catch (e) { modal = ""; } }
+  app.innerHTML = '<div class="view on">' + body + '</div>' +
+    '<div class="footer-note">巡 v0.6 ── 王道學・九性氣學(ガイアコード®体系)準拠試作<br>本文・特性ラベルは原典要旨の仮要約であり、正式版は監修を要します</div>' + modal;
+  try { document.body.classList.toggle("dlgopen", !!(S.detail || S.lesson)); } catch (e) {}
+}
+function setTab(id) {
+  S.tab = id;
+  var v = findView(id);
+  if (v.onEnter) v.onEnter();
+  render();
+  try { window.scrollTo(0, 0); } catch (e) {}
+}
+/* 初期化 */
+(function init() {
+  S.profile = loadProfile();
+  S.sel = todayYMD();
+  var t = todayYMD();
+  S.calYM = { y: t.y, m: t.m };
+  render();
+  /* 起動の円相を後片付け */
+  try { setTimeout(function () { var sp = document.getElementById("splash"); if (sp && sp.parentNode) sp.parentNode.removeChild(sp); }, 2400); } catch (e) {}
+  /* PWA: Service Worker登録(https配信時のみ・失敗しても本体は動作) */
+  try {
+    if (typeof navigator !== "undefined" && "serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+      navigator.serviceWorker.register("./sw.js").catch(function () {});
+    }
+  } catch (e) {}
+})();
+
+/* ============================================================
+ * ビュー: 縁(えにし) — 一対一・集団の相性
+ * ============================================================ */
+function loadPeople() {
+  var raw = Store.get("meguri.people");
+  if (raw) { try { var a = JSON.parse(raw); if (Array.isArray(a)) return a; } catch (e) {} }
+  return [];
+}
+function savePeople(a) { Store.set("meguri.people", JSON.stringify(a)); }
+function personOf(id) {
+  if (id === "me") { var p = S.profile; return { id: "me", name: "わたし", by: p.by, bm: p.bm, bd: p.bd, bh: p.bh }; }
+  var ps = loadPeople();
+  for (var i = 0; i < ps.length; i++) if (ps[i].id === id) return ps[i];
+  return null;
+}
+function addPerson() {
+  var nm = document.getElementById("pname").value.trim();
+  var dv = document.getElementById("pdate").value;
+  var hv = document.getElementById("phour").value;
+  if (!nm || !dv) return;
+  var parts = dv.split("-");
+  var ps = loadPeople();
+  ps.push({ id: "p" + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36), name: nm.slice(0, 20), by: +parts[0], bm: +parts[1], bd: +parts[2], bh: hv === "" ? null : +hv });
+  savePeople(ps);
+  render();
+}
+function delPerson(id) {
+  savePeople(loadPeople().filter(function (p) { return p.id !== id; }));
+  S.enSel = S.enSel.filter(function (x) { return x !== id; });
+  S.enPair = null;
+  render();
+}
+function togglePerson(id) {
+  var i = S.enSel.indexOf(id);
+  if (i >= 0) S.enSel.splice(i, 1); else S.enSel.push(id);
+  S.enPair = null;
+  render();
+}
+function setEnPair(a, b) { S.enPair = [a, b]; render(); }
+
+/* 一対一の縁カード群 */
+function pairHTML(pa, pb) {
+  var na = natalOdo(pa.by, pa.bm, pa.bd, pa.bh);
+  var nb = natalOdo(pb.by, pb.bm, pb.bd, pb.bh);
+  var rel = seiRel(na.honmei, nb.honmei);
+  var mk = seiRelMark(rel);
+  var relK = seiRel(na.getsumei, nb.getsumei); // 心の縁(月命同士)
+  var mkK = seiRelMark(relK);
+  var sp = shiPair(na.yearShi, nb.yearShi);
+  var skp = sankuPair(na.shukuIdx, nb.shukuIdx);
+  var td = todayYMD();
+  var smNow = setsuMonth(td.y, td.m, td.d);
+  var ya = yearOdo(smNow.eYear, na.honmei), yb = yearOdo(smNow.eYear, nb.honmei);
+  var h = '<div class="card">';
+  h += '<div class="pairhead">' + esc(pa.name) + '<span class="badge shu" style="margin:0">' + STAR_SHORT[na.honmei] + '</span><span class="vs">×</span>' + esc(pb.name) + '<span class="badge shu" style="margin:0">' + STAR_SHORT[nb.honmei] + '</span></div>';
+  h += '<div class="rowline"><span class="k">九性の縁</span><span class="v"><span class="relmark ' + mk.cls + '">' + mk.mark + '</span>&nbsp; ' + rel.type + (rel.type === "比和" || rel.type === "同星" ? "" : "(" + rel.ea + "×" + rel.eb + ")") + '</span></div>';
+  h += '<div class="muted" style="margin:6px 0 4px;font-size:.86rem">' + esc(seiRelText(rel, pa.name, pb.name)) + '</div>';
+  h += '<div class="rowline"><span class="k">心の縁(月命)</span><span class="v"><span class="relmark ' + mkK.cls + '" style="width:24px;height:24px;font-size:.8rem">' + mkK.mark + '</span>&nbsp; ' + STAR_SHORT[na.getsumei] + '×' + STAR_SHORT[nb.getsumei] + '</span></div>';
+  h += '<div class="rowline"><span class="k">年支</span><span class="v">' + na.yearShi + '×' + nb.yearShi + (sp ? ' — <b>' + sp.rel + '</b>' : ' — 特段の合冲なし') + '</span></div>';
+  if (sp) h += '<div class="muted" style="margin-top:4px;font-size:.82rem">' + esc(sp.note) + '</div>';
+  h += '</div>';
+  if (skp) {
+    h += '<div class="card"><div class="chd"><span class="ct">宿 の 縁</span><span class="csub">三九の秘法(補完体系)</span></div>';
+    h += '<div class="pairhead" style="font-size:.95rem">' + na.shuku + '宿<span class="vs">×</span>' + nb.shuku + '宿</div>';
+    h += '<div class="rowline"><span class="k">対関係</span><span class="v"><span class="en-' + skp.info.cls + '" style="font-size:1.02rem">' + skp.info.label + '</span></span></div>';
+    h += '<div class="rowline"><span class="k">たがいの位置</span><span class="v">' + esc(pa.name) + '→' + esc(pb.name) + ': ' + skp.ab + ' ／ ' + esc(pb.name) + '→' + esc(pa.name) + ': ' + skp.ba + '</span></div>';
+    h += '<div class="muted" style="margin-top:6px;font-size:.86rem">' + esc(skp.info.desc) + '</div></div>';
+  }
+  h += '<div class="card"><div class="chd"><span class="ct">今 年 の 位 相</span><span class="csub">' + esc(wareki(smNow.eYear)) + '</span></div>';
+  h += '<div class="chipline"><span class="chip k-' + kindCls(ya.phase.kind) + '">' + esc(pa.name) + ' — ' + ya.phase.name + '</span><span class="chip k-' + kindCls(yb.phase.kind) + '">' + esc(pb.name) + ' — ' + yb.phase.name + '</span></div>';
+  h += '<div class="muted" style="font-size:.86rem">' + esc(phasePairText(ya.phase, yb.phase, pa.name, pb.name)) + '</div></div>';
+  return h;
+}
+
+/* 集団の縁カード群 */
+function groupHTML(people) {
+  var td = todayYMD();
+  var smNow = setsuMonth(td.y, td.m, td.d);
+  var nats = people.map(function (p) { return { p: p, n: natalOdo(p.by, p.bm, p.bd, p.bh) }; });
+  var members = nats.map(function (x) { return { name: x.p.name, phase: yearOdo(smNow.eYear, x.n.honmei).phase }; });
+  var g = groupPhase(members);
+  var dist = elemDist(nats.map(function (x) { return x.n.honmei; }));
+  var h = '';
+  // 位相マップ
+  h += '<div class="card"><div class="chd"><span class="ct">位 相 マ ッ プ</span><span class="csub">' + esc(wareki(smNow.eYear)) + '・' + people.length + '名</span></div>';
+  function chips(arr, cls) { return arr.map(function (m) { return '<span class="chip k-' + cls + '">' + esc(m.name) + ' — ' + m.phase.name + '</span>'; }).join(''); }
+  h += '<div class="chipline">' + chips(g.sei, "sei") + chips(g.gou, "gou") + chips(g.sui, "sui") + '</div>';
+  h += '<div class="muted" style="font-size:.86rem">' + esc(groupPhaseText(g)) + '</div></div>';
+  // 五行分布
+  var maxC = 1; ELEM_ORDER.forEach(function (e) { if (dist.counts[e] > maxC) maxC = dist.counts[e]; });
+  h += '<div class="card"><div class="chd"><span class="ct">九 性 の 分 布</span><span class="csub">五行のつりあい</span></div><div class="elembar">';
+  ELEM_ORDER.forEach(function (e) {
+    var c = dist.counts[e];
+    h += '<div class="ecell' + (c === 0 ? " miss" : "") + '"><div class="eb"><div class="ebi" style="height:' + (c === 0 ? 10 : Math.round(8 + 36 * c / maxC)) + 'px"></div></div><div class="el">' + e + '</div><div class="ec">' + c + '名</div></div>';
+  });
+  h += '</div><div class="muted" style="font-size:.84rem">' + esc(elemDistText(dist, people.length)) + '</div></div>';
+  // マトリクス
+  h += '<div class="card"><div class="chd"><span class="ct">相 性 マ ト リ ク ス</span><span class="csub">生=相生・剋=相剋・和=比和・同=同星</span></div>';
+  h += '<div class="stripwrap"><table class="mtx"><tr><th></th>';
+  nats.forEach(function (x) { h += '<th>' + esc(x.p.name.slice(0, 3)) + '</th>'; });
+  h += '</tr>';
+  for (var i = 0; i < nats.length; i++) {
+    h += '<tr><th>' + esc(nats[i].p.name.slice(0, 3)) + '</th>';
+    for (var j = 0; j < nats.length; j++) {
+      if (i === j) { h += '<td class="diag">—</td>'; continue; }
+      var r = seiRel(nats[i].n.honmei, nats[j].n.honmei);
+      var m = seiRelMark(r);
+      var hit = S.enPair && ((S.enPair[0] === nats[i].p.id && S.enPair[1] === nats[j].p.id) || (S.enPair[0] === nats[j].p.id && S.enPair[1] === nats[i].p.id));
+      h += '<td class="c-' + m.cls.replace("r-", "") + (hit ? " hit" : "") + '" onclick="setEnPair(\'' + nats[i].p.id + '\',\'' + nats[j].p.id + '\')">' + m.mark + '</td>';
+    }
+    h += '</tr>';
+  }
+  h += '</table></div><div class="muted" style="font-size:.72rem;text-align:center;margin-top:4px">セルをタップすると、その二人の縁を下に表示します</div></div>';
+  // タップされた対の詳細
+  if (S.enPair) {
+    var pa = personOf(S.enPair[0]), pb = personOf(S.enPair[1]);
+    if (pa && pb) h += pairHTML(pa, pb);
+  }
+  return h;
+}
+
+function viewEn() {
+  var ps = loadPeople();
+  var all = [personOf("me")].concat(ps);
+  var h = '';
+  // 人物リスト
+  h += '<div class="card"><div class="chd"><span class="ct">ひ と び と</span><span class="csub">' + (Store.persistent ? "この端末に保存されます" : "この画面を開いている間のみ保持") + '</span></div>';
+  h += '<ul class="tklist" style="margin-top:2px">';
+  for (var i = 0; i < all.length; i++) {
+    var p = all[i];
+    var n = natalOdo(p.by, p.bm, p.bd, p.bh);
+    var selc = S.enSel.indexOf(p.id) >= 0;
+    h += '<li class="' + (selc ? "done" : "") + '" style="align-items:center">' +
+      '<span class="tkbox" onclick="togglePerson(\'' + p.id + '\')" style="margin-top:0"></span>' +
+      '<span onclick="togglePerson(\'' + p.id + '\')" style="flex:1"><b style="color:var(--sumi)">' + esc(p.name) + '</b> <span class="pmeta">' + STAR_SHORT[n.honmei] + '・' + n.yearShi + '</span></span>' +
+      (p.id === "me" ? '<span class="pmeta">命タブで設定</span>' : '<button class="pdel" onclick="delPerson(\'' + p.id + '\')" aria-label="削除">×</button>') +
+      '</li>';
+  }
+  h += '</ul>';
+  h += '<div class="forminline" style="margin-top:12px"><input type="text" id="pname" placeholder="なまえ" maxlength="20" style="flex:1;min-width:90px">';
+  h += '<input type="date" id="pdate" min="1900-01-01" max="2030-12-31"><select id="phour"><option value="">生時(任意)</option>';
+  for (var hh = 0; hh < 24; hh++) h += '<option value="' + hh + '">' + hh + '時台</option>';
+  h += '</select><button class="btn" onclick="addPerson()">加える</button></div>';
+  h += '<div class="selbar"><span>' + (S.enSel.length ? S.enSel.length + '名を選択中' : '二人選ぶと一対一、三人以上で集団の縁を観ます') + '</span>' +
+    (S.enSel.length ? '<button class="dbtn" onclick="S.enSel=[];S.enPair=null;render()">選択解除</button>' : '') + '</div>';
+  h += '</div>';
+  // 分析
+  var sel = S.enSel.map(personOf).filter(Boolean);
+  if (sel.length === 2) h += pairHTML(sel[0], sel[1]);
+  else if (sel.length >= 3) h += groupHTML(sel);
+  h += '<div class="card"><div class="note-warn" style="border-top:none;margin-top:0;padding-top:0">九性の相生相剋は一般気学準拠の補完見立て(原典外)、宿の縁も補完体系です。年支の合冲と位相は本体系より。いずれの縁も吉凶の断定ではなく、役割と距離感を設計するための地図としてお使いください。</div></div>';
+  return h;
+}
+
+/* ============================================================
+ * 詳細モーダル: この日をくわしく観る
+ * ============================================================ */
+function openDetail() { S.detail = { y: S.sel.y, m: S.sel.m, d: S.sel.d }; render(); }
+function closeDetail() { S.detail = null; render(); }
+function detailBack(ev) { if (ev.target && ev.target.classList.contains("dlg-back")) closeDetail(); }
+function gotoNote() { S.detail = null; setTab("gyo"); }
+
+function detailHTML(d) {
+  var td = todayYMD();
+  var isToday = sameYMD(d, td);
+  var nt = natal(), n = nt.honmei;
+  var dO = dayOdo(d.y, d.m, d.d, n), ph = dO.phase;
+  var sm = setsuMonth(d.y, d.m, d.d);
+  var mO = monthOdo(sm.eYear, sm.mIdx, n), yO = yearOdo(sm.eYear, n);
+  var kyu = kyureki(d.y, d.m, d.d);
+  var de = dayEto(d.y, d.m, d.d);
+  var ye = yearEto(sm.eYear);
+  var kou = kouOf(d.y, d.m, d.d);
+  var sc = SEKKI_COLOR[kou.sekki];
+  var dsIdx = shukuOf(kyu);
+  var sk = sanku(nt.shukuIdx, dsIdx);
+  var skInfo = sk ? SANKU_INFO[sk.name] : null;
+  var dShi = de.charAt(1), shiI = SHI[dShi];
+  var rel = shiRel(ye.shi, dShi);
+  var nc = noteCount(ymdKey(td));
+  var ki = kiryoku(nc);
+  var pd = PHASE_DETAIL[dO.palace];
+  var checks = isToday ? loadNote(ymdKey(td)) : [];
+  var tokIdx = pickTokusei(jdnJST(d.y, d.m, d.d), n, checks);
+
+  // 気力変調の一文
+  var modLine;
+  if (isJoushou(nc)) {
+    modLine = ph.kind === "衰" ? "気力は「" + ki.level + "」——常勝の圏内。衰運は内面充実の好機、恐れず深めるとき。"
+      : ph.kind === "合" ? "気力は「" + ki.level + "」。頂の力を独走ではなく統率へ。"
+      : "気力は「" + ki.level + "」。盛運の波に乗り、惜しみなく行ずるとき。";
+  } else if (ki.rank === 2) {
+    modLine = "気力は「退気」。この日の心得より先に、二十の特性をあと" + (10 - nc) + "つ行じて活気圏へ。";
+  } else {
+    modLine = "気力は「滅気」。期の吉凶にかかわらず、まず一つの行から。小さな一践が螺旋の入口。";
+  }
+
+  var h = '<div class="dlg-back" onclick="detailBack(event)"><div class="dlg">';
+  h += '<div class="dlg-hd"><span class="dlg-title">' + toKanji(d.m) + '月' + toKanji(d.d) + '日 をくわしく</span><button class="dlg-x" onclick="closeDetail()" aria-label="とじる">×</button></div>';
+
+  // 一、要諦
+  h += '<div class="dsec"><div class="dhd">要 諦</div>';
+  h += '<div class="youtei">' + esc(phaseKanji(notifyLine(ph, nc, n))) + '</div>';
+  h += '<div class="dsen" style="color:var(--sumi3);font-size:.8rem;margin-top:3px">' + de + 'の日 ・ ' + (kyu.month ? '旧暦' + (kyu.leap ? '閏' : '') + toKanji(kyu.month) + '月' + toKanji(kyu.day) + '日' : '') + (dsIdx >= 0 ? ' ・ ' + SHUKU[dsIdx] + '宿' : '') + '</div></div>';
+
+  // 二、期の心得
+  h += '<div class="dsec"><div class="dhd">期 の 心 得</div>';
+  h += '<div class="kokoroe">' + esc(pd.kokoroe) + '</div>';
+  h += '<div class="dlbl">よ し</div><div class="dchips">' + pd.yoshi.map(function (x) { return '<span class="dchip">' + esc(x) + '</span>'; }).join('') + '</div>';
+  h += '<div class="dlbl">い ま し め</div><div class="dchips">' + pd.imashime.map(function (x) { return '<span class="dchip ima">' + esc(x) + '</span>'; }).join('') + '</div>';
+  h += '<div class="dsen" style="margin-top:6px">' + esc(modLine) + '</div></div>';
+
+  // 講(三分の授業)への入口
+  var doneIds = lessonDone();
+  var lf = lessonForToday(dO.palace, doneIds);
+  var LS = lessonById(lf.id);
+  if (LS) {
+    h += '<div class="dsec"><div class="dhd">三 分 の 講</div>';
+    h += '<div class="kobtn" onclick="openLesson(\'' + LS.id + '\')">' +
+      '<span class="koico">' + esc(LS.maki) + '</span>' +
+      '<span class="kot"><b>' + esc(LS.title) + '</b><span>' + esc(lf.why) + ' ・ 約三分 ・ 第' + toKanji(LS.no) + '講</span></span>' +
+      '<span class="shuin' + (doneIds.indexOf(LS.id) >= 0 ? '' : ' mi') + '">' + (doneIds.indexOf(LS.id) >= 0 ? '修' : '講') + '</span></div>';
+    h += '<div class="dsen" style="font-size:.72rem;color:var(--sumi3);margin-top:6px">全十六講 ' + doneIds.length + '講を修了</div></div>';
+  }
+
+  // 三、時の流れ(年→月→日)
+  h += '<div class="dsec"><div class="dhd">時 の 流 れ</div>';
+  h += '<div class="dchips"><span class="dchip flow">年 ' + phaseKanji(yO.phase.name) + '</span><span class="dchip flow">月 ' + phaseKanji(mO.phase.name) + '</span><span class="dchip flow">日 ' + phaseKanji(ph.name) + '</span></div>';
+  h += '<div class="dsen">九年の波は「' + phaseKanji(yO.phase.name) + '」、月の波は「' + phaseKanji(mO.phase.name) + '」——そのなかの' + (isToday ? '今日' : 'この日') + 'は「' + phaseKanji(ph.name) + '」。' + esc(ph.meidai) + 'を所作に。</div></div>';
+
+  // 四、宿とえにし(補完)
+  if (dsIdx >= 0 && skInfo) {
+    h += '<div class="dsec"><div class="dhd">宿 と え に し</div>';
+    h += '<div class="dsen"><b>' + SHUKU[dsIdx] + '宿</b> — ' + esc(SHUKU_INFO[SHUKU[dsIdx]]) + '</div>';
+    h += '<div class="dsen">本命宿(' + nt.shuku + ')から観て <span class="en-' + skInfo.cls + '">' + sk.name + '(' + skInfo.label + ')</span>。' + esc(SANKU_ADVICE[sk.name]) + '</div>';
+    h += '<div class="dsen" style="font-size:.72rem;color:var(--sumi3)">※宿曜はガイアコード原典外の補完体系です</div></div>';
+  }
+
+  // 五、支のことわり
+  h += '<div class="dsec"><div class="dhd">支 の こ と わ り</div>';
+  h += '<div class="dsen"><b>' + dShi + '</b> = ' + shiI.ji + '。' + esc(shiI.imi) + '。</div>';
+  if (rel) h += '<div class="dsen">' + ye.shi + '年×' + dShi + '日は<b>' + rel.rel + '</b>——' + esc(rel.note) + '</div>';
+  if (isToday) h += '<div class="dsen" style="color:var(--sumi3)">いまは' + kokuOf(new Date().getHours()) + 'の刻。</div>';
+  h += '</div>';
+
+  // 六、今日の一践
+  h += '<div class="dsec"><div class="dhd">' + (isToday ? '今 日' : 'こ の 日') + ' の 一 践</div>';
+  if (tokIdx >= 0) {
+    h += '<div class="issen">「<b>' + esc(TOKUSEI[n][tokIdx]) + '</b>」<br><span style="font-size:.72rem;color:var(--sumi3)">' + SEI_NAME[n] + '・二十の特性より</span></div>';
+    if (isToday) h += '<div style="text-align:center;margin-top:9px"><button class="dbtn" onclick="gotoNote()">幸せノートをひらく</button></div>';
+  } else {
+    h += '<div class="issen">二十の特性、すべて満行——<b>見事</b>。</div>';
+  }
+  h += '</div>';
+
+  // 七、季のことば
+  h += '<div class="dsec"><div class="dhd">季 の こ と ば</div>';
+  h += '<div class="dsen">' + kou.sekki + ' — ' + esc(SEKKI_MSG[kou.sekki]) + '</div>';
+  h += '<div class="dsen">七十二候は「<b>' + kou.name + '</b>(' + kou.yomi + ')」— ' + kou.sekki + '・' + kou.posName + '。</div>';
+  h += '<div class="dsen kotoba-color">節気のいろ <span class="swatch" style="background:' + sc[1] + '"></span>「' + sc[0] + '」</div></div>';
+
+  h += '<div class="dsen" style="font-size:.68rem;color:var(--sumi3);padding-top:10px">本文は原典要旨の仮要約(要監修)。宿曜は補完体系。</div>';
+  h += '<button class="dlg-close-btn" onclick="closeDetail()">と じ る</button>';
+  h += '</div></div>';
+  return h;
+}
+
+/* ============================================================
+ * 王道學 三分の講 — ビューア・受講記録
+ * ============================================================ */
+function lessonDone() {
+  var raw = Store.get("meguri.lessons");
+  if (raw) { try { var o = JSON.parse(raw); if (o && typeof o === "object") return Object.keys(o); } catch (e) {} }
+  return [];
+}
+function markLessonDone(id) {
+  var raw = Store.get("meguri.lessons"), o = {};
+  if (raw) { try { o = JSON.parse(raw) || {}; } catch (e) { o = {}; } }
+  o[id] = Date.now();
+  Store.set("meguri.lessons", JSON.stringify(o));
+}
+function openLesson(id) { S.lesson = { id: id, step: 0 }; render(); }
+function closeLesson() { S.lesson = null; render(); } // S.detailが残っていれば詳細へ戻る
+function lessonStep(dir) {
+  var L = lessonById(S.lesson.id);
+  var max = L.steps.length; // 最終+1 = 問いと修了の頁
+  S.lesson.step = Math.max(0, Math.min(max, S.lesson.step + dir));
+  render();
+}
+function finishLesson() {
+  markLessonDone(S.lesson.id);
+  S.lesson.step = -1; // 修了頁
+  render();
+}
+function lessonBack(ev) { if (ev.target && ev.target.classList.contains("dlg-back")) closeLesson(); }
+
+function lessonHTML() {
+  var L = lessonById(S.lesson.id);
+  if (!L) return "";
+  var st = S.lesson.step;
+  var total = L.steps.length + 1; // 段 + 問い頁
+  var h = '<div class="dlg-back" onclick="lessonBack(event)"><div class="lsn">';
+  h += '<div class="lsn-hd"><div class="lsn-maki">王道學 三分の講 ── 巻・' + esc(L.maki) + '</div>' +
+       '<div class="lsn-title"><span>' + esc(L.title) + '</span><span class="lsn-min">約三分</span></div></div>';
+  if (st === -1) {
+    // 修了頁
+    h += '<div class="lsn-dan lsn-done"><div class="shuin">修</div>' +
+         '<div style="font-weight:800;font-size:1.05rem;letter-spacing:.2em">受 講 修 了</div>' +
+         '<div class="dsen" style="margin-top:8px">第' + toKanji(L.no) + '講「' + esc(L.title) + '」を修めました。<br>行の一問を、今日のどこかで思い出してください。</div>' +
+         '<div class="dsen" style="font-size:.74rem;color:var(--sumi3);margin-top:6px">修了 ' + lessonDone().length + ' ／ 全十六講</div></div>';
+    h += '<div class="lsn-nav"><button class="dbtn" onclick="closeLesson()">と じ る</button></div>';
+  } else {
+    // 進捗点
+    h += '<div class="lsn-dots">';
+    for (var i = 0; i < total; i++) h += '<i class="' + (i <= st ? 'on' : '') + '"></i>';
+    h += '</div>';
+    if (st < L.steps.length) {
+      var s = L.steps[st];
+      h += '<div class="lsn-dan"><div class="lsn-danno">' + ["一","二","三","四","五"][st] + '</div>' +
+           '<div class="lsn-dant">' + esc(s.t) + '</div>' +
+           '<div class="lsn-body">' + esc(s.b) + '</div>' +
+           (L.audioUrl ? '<audio controls preload="none" src="' + L.audioUrl + '" style="width:100%;margin-top:12px"></audio>' : '') +
+           '</div>';
+      h += '<div class="lsn-nav">' +
+           (st > 0 ? '<button class="dbtn" onclick="lessonStep(-1)">も ど る</button>' : '<button class="dbtn" onclick="closeLesson()">と じ る</button>') +
+           '<button class="btn" onclick="lessonStep(1)">つ ぎ へ</button></div>';
+    } else {
+      // 問いの頁
+      h += '<div class="lsn-dan"><div class="lsn-danno">結</div>' +
+           '<div class="lsn-dant">行の一問</div>' +
+           '<div class="lsn-q"><span class="ql">と い</span>' + esc(L.q) + '</div>' +
+           '<div class="dsen" style="font-size:.74rem;color:var(--sumi3);margin-top:10px">答えは書かなくてよい。今日一日、胸の内に置いて歩くこと——それが受講である。</div></div>';
+      h += '<div class="lsn-nav"><button class="dbtn" onclick="lessonStep(-1)">も ど る</button>' +
+           '<button class="btn" onclick="finishLesson()">修 め る</button></div>';
+    }
+  }
+  h += '<div class="dsen" style="font-size:.66rem;color:var(--sumi3);padding:12px 0 2px;text-align:center">本文は原典・講義要旨の仮要約【要監修】</div>';
+  h += '</div></div>';
+  return h;
+}
+</script>
+</body>
+</html>
